@@ -17,10 +17,13 @@ const handler = async (req, res) => {
 
   try {
     const pageToRevalidate = body.pageToRevalidate;
-    if (pageToRevalidate) {
-      await res.revalidate(`/pages/${pageToRevalidate}`);
-      return res.json({ revalidated: true });
+
+    if (!pageToRevalidate) {
+      return res.status(401).json({ error: 'No page was given!' });
     }
+
+    await res.revalidate(`/menus/${pageToRevalidate}`);
+    return res.json({ revalidated: true });
   } catch (error) {
     return res.status(500).json({ error: 'Error revalidating!' });
   }
