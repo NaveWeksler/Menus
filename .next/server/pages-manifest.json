@@ -1,9 +1,0 @@
-{
-  "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
-  "/api/revalidate-menu": "pages/api/revalidate-menu.js",
-  "/": "pages/index.html",
-  "/menus/[id]": "pages/menus/[id].js",
-  "/_document": "pages/_document.js",
-  "/404": "pages/404.html"
-}
