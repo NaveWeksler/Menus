@@ -1,30 +1,28 @@
 import { useState } from 'react';
+import style from "styles/home.module.css";
 
-const Header = ({ title }) => {
-  return <h1>{title ? title : 'Default Title'}</h1>;
-};
 
 const HomePage = () => {
-  const names = ['Ada Lovelace', 'Grace Hopper', 'Margaret Hamilton'];
-  const [likes, setLikes] = useState(0);
-
   return (
-    <div>
-      <Header title='Develop. Preview. Ship. 🚀' />
-      <ul>
-        {names.map((name) => (
-          <li key={name}>{name}</li>
-        ))}
-      </ul>
-
-      <button
-        onClick={() => setLikes(likes + 1)}
-        className='bg-sky-500 hover:bg-sky-700'
-      >
-        Like ({likes})
-      </button>
+    <div className={`${style.fullscreen} align-items-center`}>
+      <h1 className="display-4">Menus</h1>
+      <span className="p-4 display-6">Scan a QR code To Get Started!</span>
+      
+      <span className="lead ">Or Enter Name</span>
+      <form className="w-50 my-2">
+        <div className="row mb-3 w-100 d-inline-flex justify-content-center">
+          
+          <div className="col-sm-5">
+            <input type="text" className="form-control" id="searchInput"/>
+          </div>
+          
+          <button className="col-sm-3 btn btn-success">Search</button>
+          
+        </div>
+       
+      </form>
     </div>
-  );
+  )
 };
 
 export default HomePage;
