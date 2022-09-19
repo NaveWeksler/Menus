@@ -1,11 +1,9 @@
 **/node_modules
 .next
 
-# Keep environment variables out of version control
-.env
-
 # misc
 .DS_Store
+.env
 .env.local
 .env.development.local
 .env.test.local
