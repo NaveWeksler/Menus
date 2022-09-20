@@ -1,4 +1,4 @@
-import { withDB, rest } from "util/middleware";
+import { withDB, rest } from "lib/util/middleware";
 import Menu from "lib/models/menu";
 
 export default rest.post(withDB(async (req, res) => {

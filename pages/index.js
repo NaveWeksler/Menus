@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import style from "styles/home.module.css";
+
 
 
 const HomePage = () => {
   return (
-    <div className={`${style.fullscreen} align-items-center`}>
+    <div className="fullscreen align-items-center">
       <h1 className="display-4">Menus</h1>
       <span className="p-4 display-6">Scan a QR code To Get Started!</span>
       
