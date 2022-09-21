@@ -1,3 +1,6 @@
+/**
+ * Revalidates the selected menu - compiles it using isr.
+ */
 const handler = async (req, res) => {
   if (req.method !== 'POST') {
     return (
