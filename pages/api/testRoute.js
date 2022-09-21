@@ -1,10 +1,11 @@
-import { withDB, rest } from "lib/util/middleware";
-import Menu from "lib/models/menu";
+import { withDB, rest } from 'lib/util/middleware';
+import Menu from 'lib/models/menu';
 
-export default rest.post(withDB(async (req, res) => {
+export default rest.post(
+  withDB(async (req, res) => {
     const dbData = await Menu.find({}).exec();
-    console.debug("server test route", dbData);
+    console.debug('server test route', dbData);
 
-    res.status(200).json({data: dbData});
-
-}));
+    res.status(200).json({ data: dbData });
+  })
+);
