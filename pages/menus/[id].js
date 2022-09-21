@@ -4,6 +4,7 @@ import MenuItem from '../../components/MenuItem';
 export const getStaticPaths = async () => {
   const ids = await getMenusIds();
 
+  // changing the format to match the requirements of next
   const paths = ids.map((id) => ({
     params: {
       id,
@@ -12,7 +13,7 @@ export const getStaticPaths = async () => {
 
   return {
     paths,
-    fallback: 'blocking',
+    fallback: false,
   };
 };
 
@@ -22,16 +23,16 @@ export const getStaticProps = async (context) => {
 
   return {
     props: data,
-    revalidate: 120,
   };
 };
 
 const Menu = ({ title, items }) => {
+  // just a test
   return (
     <div>
       <h1>{title}</h1>
       {items.map((item) => (
-        <MenuItem key={item.id} data={item} />
+        <MenuItem key={item._id} data={item} />
       ))}
     </div>
   );
