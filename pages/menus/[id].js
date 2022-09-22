@@ -32,7 +32,7 @@ const Menu = ({ title, items }) => {
     <div>
       <h1>{title}</h1>
       {items.map((item) => (
-        <MenuItem key={item._id} data={item} />
+        <MenuItem {...item} />
       ))}
     </div>
   );
