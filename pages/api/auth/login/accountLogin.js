@@ -1,11 +1,8 @@
 import { rest, withDB } from "lib/util/middleware";
 import User from "lib/models/user";
 import { getCSRFToken, getSessionToken, getSessionExpireMs } from "lib/tokenHandler";
+import {checkUser} from "lib/userValidator";
 const debug = require("debug")("menus:accountLogin");
-
-const checkUser = (username, password) => {
-    return /^[a-zA-Z0-9]{3,10}$/.test(username) && /^[a-zA-Z0-9]{5,18}$/.test(password);
-}
 
 const handler = rest.post(withDB(async (req, res) => {
     debug("BODY: %O", req.body);
