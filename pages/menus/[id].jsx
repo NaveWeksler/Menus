@@ -22,17 +22,6 @@ export const getStaticProps = async (context) => {
     const id = context.params.id;
     const data = await getMenuData(id);
 
-    data.items = [
-        data.items[0],
-        data.items[0],
-        data.items[0],
-        data.items[0],
-        data.items[0],
-        data.items[0],
-        data.items[0],
-        data.items[0],
-    ];
-
     return {
         props: data,
     };
