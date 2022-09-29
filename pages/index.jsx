@@ -1,28 +1,28 @@
-import { useTheme } from 'next-themes';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+
+
 
 const HomePage = () => {
-    const { theme, setTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-    useEffect(() => setMounted(true), []);
-
-    return (
-        <div className='h-screen flex items-center justify-center dark:bg-black'>
-            <select
-                value={theme}
-                onChange={(e) => setTheme(e.target.value)}
-                data-test-id='theme-selector'
-            >
-                <option value='system'>System</option>
-                {mounted && (
-                    <>
-                        <option value='dark'>Dark</option>
-                        <option value='light'>Light</option>
-                    </>
-                )}
-            </select>
+  return (
+    <div className="fullscreen align-items-center">
+      <h1 className="display-4">Menus</h1>
+      <span className="p-4 display-6">Scan a QR code To Get Started!</span>
+      
+      <span className="lead ">Or Enter Name</span>
+      <form className="w-50 my-2">
+        <div className="row mb-3 w-100 d-inline-flex justify-content-center">
+          
+          <div className="col-sm-5">
+            <input type="text" className="form-control" id="searchInput"/>
+          </div>
+          
+          <button className="col-sm-3 btn btn-success">Search</button>
+          
         </div>
-    );
+       
+      </form>
+    </div>
+  )
 };
 
 export default HomePage;

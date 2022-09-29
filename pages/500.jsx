@@ -1,19 +1,23 @@
+import style from 'styles/errorPage.module.css';
 import Link from 'next/link';
 
 const ServerError = () => (
-    <div className='h-screen p-2 pb-[30%] flex flex-col justify-center items-center overflow-x-hidden'>
-        <h2 className='text-3xl font-medium'>
-            <strong>500</strong> Internal Server Error
-        </h2>
-
-        <hr className='border-r border-gray-400 w-80 mt-6 mb-4' />
-        <span className='text-xl font-light'>
-            Sorry, There is an Error in The Server. Please Try Again Later.{' '}
-            <Link href='/'>
-                <a className='text-blue-500'>Go To Main Menu</a>
-            </Link>
-        </span>
+  <div
+    className={`${style.marginText} fullscreen d-flex justify-content-center align-items-center`}
+  >
+    <div className='w-25'>
+      <h2>
+        <strong>500</strong> Internal Server Error
+      </h2>
     </div>
+    <hr className='border-2 w-25' />
+    <span className='lead'>
+      Sorry, There is an Error in The Server. Please Try Again Later.{' '}
+      <Link href='/'>
+        <a className=''>Go To Main Menu</a>
+      </Link>
+    </span>
+  </div>
 );
 
 export default ServerError;
