@@ -1,8 +1,13 @@
+import Layout from 'components/Layout';
+import { ThemeProvider } from 'next-themes';
 import 'styles/globals.css';
-import "bootstrap/dist/css/bootstrap.css";
 
-const App = ({ Component, pageProps }) => {
-  return <Component {...pageProps} />;
-};
+const App = ({ Component, pageProps }) => (
+    <ThemeProvider attribute='class'>
+        <Layout>
+            <Component {...pageProps} />
+        </Layout>
+    </ThemeProvider>
+);
 
 export default App;

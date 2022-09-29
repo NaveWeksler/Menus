@@ -1,4 +1,4 @@
-import { getMenusIds, getMenuData } from '../../lib/getMenus';
+import { getMenusIds, getMenuData } from 'lib/getMenus';
 import MenuItem from 'components/MenuItem';
 import MenuBar from 'components/MenuBar';
 
@@ -28,14 +28,15 @@ export const getStaticProps = async (context) => {
 };
 
 const Menu = ({ title, items }) => {
-    // just a test
     return (
-        <div className='d-flex flex-column align-items-center'>
-            <MenuBar />
-            <h1>{title}</h1>
-            {items.map((item, index) => (
-                <MenuItem {...item} key={inedx.toString()} />
-            ))}
+        <div className='flex flex-col max-w-screen-sm mx-auto'>
+            <MenuBar title={title} />
+
+            <div className='overflow-y-auto'>
+                {items.map((item, index) => (
+                    <MenuItem key={index} {...item} />
+                ))}
+            </div>
         </div>
     );
 };
