@@ -6,7 +6,7 @@ const Layout = ({ children }) => (
             <title>Menus</title>
         </Head>
         <div className='h-screen'>
-            <main>{children}</main>
+            <main className='w-full h-full'>{children}</main>
         </div>
     </>
 );
