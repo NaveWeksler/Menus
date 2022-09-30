@@ -30,7 +30,7 @@ export const getStaticProps = async (context) => {
 const Menu = ({ title, items }) => {
     // just a test
     return (
-        <div className='d-flex flex-column align-items-center'>
+        <div className='flex flex-col items-center'>
             <MenuBar />
             <h1>{title}</h1>
             {items.map((inedx, item) => (
