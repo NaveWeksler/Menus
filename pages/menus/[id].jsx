@@ -1,13 +1,6 @@
-<<<<<<< HEAD
-import { getMenusIds, getMenuData } from '../../lib/getMenus';
-import MenuItem from 'components/MenuItem';
-import MenuBar from 'components/MenuBar';
-=======
 import { getMenusIds, getMenuData } from 'lib/getMenus';
 import MenuItem from 'components/MenuItem';
 import MenuBar from 'components/MenuBar';
-//const debug = require('debug')('menus:id');
->>>>>>> origin/tailwind
 
 export const getStaticPaths = async () => {
     const ids = await getMenusIds();
@@ -28,7 +21,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
     const id = context.params.id;
     const data = await getMenuData(id);
-    //debug('render page with: %O', data);
+
     return {
         props: data,
     };
