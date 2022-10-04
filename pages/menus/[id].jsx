@@ -21,7 +21,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
     const id = context.params.id;
     const data = await getMenuData(id);
-    //debug('render page with: %O', data);
+
     return {
         props: data,
     };
