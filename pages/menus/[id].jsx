@@ -1,4 +1,4 @@
-import { getMenusIds, getMenuData } from 'lib/getMenus';
+import { getMenusIds, getMenuData } from 'lib/menu/getMenus';
 import MenuItem from 'components/MenuItem';
 import MenuBar from 'components/MenuBar';
 

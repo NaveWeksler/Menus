@@ -1,6 +1,6 @@
 import withAuth from 'lib/util/auth';
-import { toMenuItems } from 'lib/menuHandler';
-import { validateItems, validateTitle } from 'lib/menuValidator';
+import { toMenuItems } from 'lib/menu/menuHandler';
+import { validateItems, validateTitle } from 'lib/menu/menuValidator';
 import Menu from 'lib/models/menu';
 import { Types } from 'mongoose';
 const debug = require('debug')('menus:createMenu');

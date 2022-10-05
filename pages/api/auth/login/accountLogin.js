@@ -4,9 +4,9 @@ import {
     getCSRFToken,
     getSessionToken,
     getSessionExpireMs,
-} from 'lib/tokenHandler';
-import { checkUser } from 'lib/userValidator';
-import { comparePsw } from 'lib/pswStorage';
+} from 'lib/auth/tokenHandler';
+import { checkUser } from 'lib/auth/userValidator';
+import { comparePsw } from 'lib/auth/pswStorage';
 const debug = require('debug')('menus:accountLogin');
 
 const handler = rest.post(

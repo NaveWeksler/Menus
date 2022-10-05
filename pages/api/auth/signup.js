@@ -1,7 +1,7 @@
 const { withDB, rest } = require('lib/util/middleware');
 import User from 'lib/models/user';
-import { validUser } from 'lib/userValidator';
-import { storePsw } from 'lib/pswStorage';
+import { validUser } from 'lib/auth/userValidator';
+import { storePsw } from 'lib/auth/pswStorage';
 import { randomBytes } from 'crypto';
 const debug = require('debug')('menus:signup');
 
