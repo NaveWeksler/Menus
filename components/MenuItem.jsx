@@ -1,25 +1,26 @@
 import Image from 'next/image';
 
 const MenuItem = ({ name, description, price, image }) => {
-    // NOTE: MenuItem is designed for hebrew
-    return (
-        <div className='flex flex-row border rounded h-32 mx-5'>
-            <div className='w-[20vh] h-full relative overflow-hidden rounded-lg'>
-                <Image src={image} alt={name} layout='fill' objectFit='cover' />
-            </div>
-            <div className='flex-1 flex flex-row-reverse items-center justify-start mx-2'>
-                <span className='font-light text-lg text-center flex items-center justify-center'>
-                    {name}
-                </span>
-                <span className='text-blue-600 px-2 flex items-center justify-center'>
-                    {price}
-                </span>
-                <span className='text-gray-700 font-thin flex items-center justify-center'>
-                    {description}
-                </span>
-            </div>
+  return (
+    <div className='flex flex-row border rounded h-40 mx-5'>
+      <div className='w-[25vw] h-full relative overflow-hidden rounded-lg'>
+        <Image src={image} alt={name} layout='fill' objectFit='cover' />
+      </div>
+      <div className='flex-1 flex flex-col items-center justify-start mx-2'>
+        <span className='font-light text-3xl text-center flex items-center justify-center '>
+          {name}
+        </span>
+        <span className='text-blue-400 px-2 flex items-center justify-center text-xl mt'>
+          {price}
+        </span>
+        <div className='flex w-full h-full justify-end mb-2'>
+          <span className='text-gray-300 font-thin flex items-end justify-end w-10/12 h-full text-xl'>
+            {description}
+          </span>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 /**
