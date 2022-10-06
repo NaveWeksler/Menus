@@ -8,9 +8,9 @@ const debug = require('debug')('menus:signup');
 const handler = rest.post(
     withDB(async (req, res) => {
         //test
-        const { username, password, name, familyName } = req.body;
-
-        if (!validUser(username, password, name, familyName))
+        const { email, password, name, lastName } = req.body;
+        console.log('TEST');
+        if (!validUser(email, password, name, lastName))
             return res.status(400).end();
 
         debug('valid user. hash');
@@ -18,21 +18,16 @@ const handler = rest.post(
         const salt = randomBytes(16).toString('base64');
         const hashPsw = await storePsw(password, salt); // need to fix. storePsw might reject in which case an error will be thrown
 
-        debug(
-            'query: username %s full name: %s %s',
-            username,
-            name,
-            familyName
-        );
+        debug('query: email %s full name: %s %s', email, name, lastName);
 
         const status = await User.updateOne(
-            { username },
+            { email },
             {
                 $setOnInsert: {
-                    username,
+                    email,
                     password: hashPsw,
-                    name,
-                    familyName,
+                    firstName: name,
+                    lastName,
                     salt,
                 },
             },
@@ -43,7 +38,7 @@ const handler = rest.post(
         if (status.upsertedCount !== 1) {
             return res.status(409).end();
         }
-        res.redirect('/login', 201);
+        res.redirect('auth/login', 201);
     })
 );
 

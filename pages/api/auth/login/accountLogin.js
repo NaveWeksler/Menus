@@ -12,15 +12,15 @@ const debug = require('debug')('menus:accountLogin');
 const handler = rest.post(
     withDB(async (req, res) => {
         debug('BODY: %O', req.body);
-        const { username, password } = req.body;
+        const { email, password } = req.body;
 
-        if (!username || !password || !checkUser(username, password)) {
+        if (!email || !password || !checkUser(email, password)) {
             return res.status(400).end();
         }
 
         debug('query for account');
-        const userToAuth = await User.findOne({ username })
-            .select('password salt ')
+        const userToAuth = await User.findOne({ email })
+            .select('password salt')
             .lean();
         debug('account found. compare with request');
         if (!comparePsw(password, userToAuth.password, userToAuth.salt)) {
