@@ -9,8 +9,27 @@ const AddMenu = () => {
         setItems([...items, <EditMenuItem key={items.length.toString()} />]);
     };
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+
+        fetch('/api/menu/createMenu', {
+            method: 'post',
+            body: data,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+    };
+
     return (
-        <form className='flex h-full p-2 flex-col'>
+        <form className='flex h-full p-2 flex-col' onSubmit={handleSubmit}>
+            <input
+                readOnly
+                value='8MH4eSpg9eulSU+7u9Nk2A=='
+                name='csrfToken'
+                className='hidden'
+            />
             <div className='my-2 w-[50%] flex items-center mx-8'>
                 <label
                     htmlFor='menuName'
@@ -21,6 +40,7 @@ const AddMenu = () => {
                 <input
                     type='text'
                     id='menuName'
+                    name='title'
                     className='inline shadow border appearance-none rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                 />
             </div>
