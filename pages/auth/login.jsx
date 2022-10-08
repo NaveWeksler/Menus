@@ -73,22 +73,28 @@ const Login = () => {
         <div className='flex justify-center items-center h-screen bg-gray-100 dark:bg-gray-700'>
             <div className='px-8 py-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg dark:shadow-gray-600 text-right'>
                 <h2 className='text-xl text-center font-semibold'>כניסה</h2>
-                <form className='mt-8'>
+                <form
+                    className='mt-8'
+                    action='/api/auth/login/accountLogin'
+                    method='post'
+                >
                     <div className=''>
-                        <label className='block text-sm m-1' for='email'>
+                        <label className='block text-sm m-1' htmlFor='email'>
                             מייל
                         </label>
                         <input
+                            name='email'
                             type='text'
                             placeholder='כתובת מייל'
                             className='w-full p-2 border bg-inherit text-right text-xs rounded-md dark:border-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-600'
                         />
                     </div>
                     <div className='mt-4'>
-                        <label className='block text-sm m-1' for='email'>
+                        <label className='block text-sm m-1' htmlFor='email'>
                             סיסמה
                         </label>
                         <input
+                            name='password'
                             type='password'
                             placeholder='סיסמה'
                             className='w-full p-2 border bg-inherit text-right text-xs rounded-md dark:border-gray-500  focus:ring-1 focus:ring-blue-600'

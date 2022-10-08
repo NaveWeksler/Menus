@@ -23,7 +23,10 @@ const handler = rest.post(
             .select('password salt')
             .lean();
         debug('account found. compare with request');
-        if (!comparePsw(password, userToAuth.password, userToAuth.salt)) {
+        if (
+            !userToAuth ||
+            !comparePsw(password, userToAuth.password, userToAuth.salt)
+        ) {
             return res.status(401).end();
         }
         debug('valid request, update session');
