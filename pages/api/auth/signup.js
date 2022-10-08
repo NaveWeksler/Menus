@@ -38,7 +38,7 @@ const handler = rest.post(
         if (status.upsertedCount !== 1) {
             return res.status(409).end();
         }
-        res.redirect('auth/login', 201);
+        res.redirect(201, 'auth/login');
     })
 );
 
