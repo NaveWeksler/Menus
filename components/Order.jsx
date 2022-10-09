@@ -7,7 +7,6 @@ const toTimeString = (time) => {
 };
 
 const Order = ({ order }) => {
-    console.log('O: ', order);
     return (
         <div className='flex items-center w-full border-t border-b'>
             <span>At: {toTimeString(order.time)}</span>

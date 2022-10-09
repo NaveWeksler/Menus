@@ -5,7 +5,6 @@ import { withSSRAuth } from 'lib/util/auth';
 const debug = require('debug')('menus:orders');
 
 const Orders = ({ orders }) => {
-    console.log(orders);
     return (
         <div className='flex-1 p-2 h-full'>
             <span className='flex items-center justify-between mt-2 mx-6'>
@@ -28,7 +27,6 @@ const Orders = ({ orders }) => {
 };
 
 export const getServerSideProps = withSSRAuth(2, ({ req, res }) => {
-    debug(req.headers.cookie);
     return {
         props: {
             orders: [

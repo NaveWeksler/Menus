@@ -101,13 +101,13 @@ const Login = () => {
                         />
                     </div>
 
-                    <div class='flex flex-row-reverse items-baseline justify-between mt-12'>
-                        <button class='px-6 py-2 ml-6 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition'>
+                    <div className='flex flex-row-reverse items-baseline justify-between mt-12'>
+                        <button className='px-6 py-2 ml-6 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition'>
                             כניסה
                         </button>
                         <a
                             href='#'
-                            class='text-sm text-blue-600 dark:text-blue-500 hover:underline'
+                            className='text-sm text-blue-600 dark:text-blue-500 hover:underline'
                         >
                             ?שכחת סיסמה
                         </a>
