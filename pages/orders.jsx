@@ -1,5 +1,6 @@
 import Order from 'components/Order';
 import Link from 'next/link';
+import { withSSRAuth } from 'lib/util/auth';
 
 const debug = require('debug')('menus:orders');
 
@@ -26,9 +27,8 @@ const Orders = ({ orders }) => {
     );
 };
 
-export async function getServerSideProps({ req, res }) {
+export const getServerSideProps = withSSRAuth(2, ({ req, res }) => {
     debug(req.headers.cookie);
-
     return {
         props: {
             orders: [
@@ -61,6 +61,6 @@ export async function getServerSideProps({ req, res }) {
             ],
         },
     };
-}
+});
 
 export default Orders;
