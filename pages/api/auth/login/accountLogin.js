@@ -9,6 +9,8 @@ import { checkUser } from 'lib/auth/userValidator';
 import { comparePsw } from 'lib/auth/pswStorage';
 const debug = require('debug')('menus:accountLogin');
 
+const maxAgeSec = parseInt(process.env.SESSION_EXP_MS) / 1000;
+
 const handler = rest.post(
     withDB(async (req, res) => {
         debug('BODY: %O', req.body);
@@ -44,10 +46,14 @@ const handler = rest.post(
         res.setHeader('set-cookie', [
             'sessionToken=' +
                 sessionToken +
-                '; path=/;  samesite=strict; httponly; secure;',
+                '; path=/;  samesite=strict; httponly; secure; Max-Age=' +
+                maxAgeSec +
+                ';',
             'csrfToken=' +
                 csrfToken +
-                '; path=/;  samesite=strict; httponly; secure;',
+                '; path=/;  samesite=strict; httponly; secure; Max-Age=' +
+                maxAgeSec +
+                ';',
         ]);
 
         res.status(200).json({ csrfToken });
