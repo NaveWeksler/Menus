@@ -26,7 +26,7 @@ const AddMenu = () => {
         <form className='flex h-full p-2 flex-col' onSubmit={handleSubmit}>
             <input
                 readOnly
-                value='8MH4eSpg9eulSU+7u9Nk2A=='
+                value='z2xB3V96NHylff/jdvEaSQ=='
                 name='csrfToken'
                 className='hidden'
             />
