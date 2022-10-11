@@ -11,11 +11,11 @@ const handler = rest.post(
         debug('query for account');
         const status = await User.updateOne(
             { email, emailToken: token },
-            { $set: { status: 'ACTIVE' } }
+            { $set: { state: 0 } }
         );
         debug('status: %o', status);
 
-        if (status.updatedCount !== 1) return res.status(401).end();
+        if (status.modifiedCount !== 1) return res.status(401).end();
 
         res.redirect(200, 'auth/login');
     })
