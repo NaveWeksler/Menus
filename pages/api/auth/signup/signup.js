@@ -3,6 +3,7 @@ import User from 'lib/models/user';
 import { validUser } from 'lib/auth/userValidator';
 import { storePsw } from 'lib/auth/pswStorage';
 import { randomBytes } from 'crypto';
+import validateEmail from 'lib/auth/signupEmailValidator';
 const debug = require('debug')('menus:signup');
 
 const handler = rest.post(
@@ -19,6 +20,7 @@ const handler = rest.post(
         const hashPsw = await storePsw(password, salt); // need to fix. storePsw might reject in which case an error will be thrown
 
         debug('query: email %s full name: %s %s', email, name, lastName);
+        const emailToken = validateEmail(email);
 
         const status = await User.updateOne(
             { email },
@@ -29,6 +31,7 @@ const handler = rest.post(
                     firstName: name,
                     lastName,
                     salt,
+                    emailToken,
                 },
             },
             { upsert: true }
@@ -38,7 +41,8 @@ const handler = rest.post(
         if (status.upsertedCount !== 1) {
             return res.status(409).end();
         }
-        res.redirect(201, 'auth/login');
+
+        res.redirect(201, 'auth/signup/validate?email=' + email);
     })
 );
 
