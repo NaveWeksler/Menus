@@ -2,7 +2,9 @@ import withAuth from 'lib/util/auth';
 import { toMenuItems } from 'lib/menu/menuHandler';
 import { validateItems, validateTitle } from 'lib/menu/menuValidator';
 import Menu from 'lib/models/menu';
+
 import { Types } from 'mongoose';
+
 const debug = require('debug')('menus:createMenu');
 
 const createMenu = withAuth(1, async (req, res) => {
@@ -23,6 +25,7 @@ const createMenu = withAuth(1, async (req, res) => {
         { $setOnInsert: { _id: menuId, title, items: ids } },
         { upsert: true }
     ).exec();
+
     debug('status: %o', status);
 
     res.status(201).end();
