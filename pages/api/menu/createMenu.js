@@ -7,7 +7,7 @@ import { Types } from 'mongoose';
 
 const debug = require('debug')('menus:createMenu');
 
-const createMenu = withAuth(1, async (req, res) => {
+const createMenu = withAuth(3, async (req, res) => {
     const { title, items } = req.body;
 
     if (!validateItems(items) || !validateTitle(title))
