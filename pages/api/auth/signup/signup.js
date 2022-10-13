@@ -3,7 +3,7 @@ import User from 'lib/models/user';
 import { validUser } from 'lib/auth/userValidator';
 import { storePsw } from 'lib/auth/pswStorage';
 import { randomBytes } from 'crypto';
-import validateEmail from 'lib/auth/signupEmailValidator';
+import sendHTML from 'lib/util/emailHandler';
 const debug = require('debug')('menus:signup');
 
 const handler = rest.post(
@@ -20,7 +20,18 @@ const handler = rest.post(
         const hashPsw = await storePsw(password, salt); // need to fix. storePsw might reject in which case an error will be thrown
 
         debug('query: email %s full name: %s %s', email, name, lastName);
-        const emailToken = validateEmail(email);
+
+        const emailToken = randomBytes(3).toString('hex');
+
+        sendHTML(
+            'Validate Email For Menus',
+            `<div><h1>Thank You For Registering a Menus Account</h1><p>Use this code to validate your email: <strong>${emailToken
+                .split('')
+                .join(
+                    ' '
+                )}</strong></p><p>Didnt register an account? dont worry you dont have to do anything.</p></div>`,
+            email
+        );
 
         const status = await User.updateOne(
             { email },
