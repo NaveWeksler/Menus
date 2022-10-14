@@ -11,6 +11,8 @@ const handler = rest.post(
         const email = req.body.email;
         if (!email) return res.status(400).end();
 
+        res.setHeader('Cache-Control', 'no-store'); // prevent cache response
+
         const token = randomBytes(3).toString('hex');
 
         sendHTML(

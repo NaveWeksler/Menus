@@ -30,6 +30,8 @@ const handler = rest.post(
             email
         );
 
+        res.setHeader('Cache-Control', 'no-store'); // prevent cache response
+
         debug('query: email %s full name: %s %s', email, name, lastName);
 
         const status = await User.updateOne(
@@ -53,7 +55,7 @@ const handler = rest.post(
         }
 
         res.redirect(201, 'auth/signup/validate?email=' + email);
-    })
+    };)
 );
 
 export default handler;

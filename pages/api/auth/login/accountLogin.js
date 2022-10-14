@@ -20,6 +20,7 @@ const handler = rest.post(
             return res.status(400).end();
         }
 
+        res.setHeader('Cache-Control', 'no-store'); // prevent cache response
         debug('query for account');
         const userToAuth = await User.findOne({ email })
             .select('password salt')

@@ -8,6 +8,8 @@ const handler = rest.post(
         debug(email, token);
         if (!email || !token) return res.status(400).end();
 
+        res.setHeader('Cache-Control', 'no-store'); // prevent cache response
+
         debug('query for account');
         const status = await User.updateOne(
             { email, emailToken: token },
@@ -18,7 +20,7 @@ const handler = rest.post(
         if (status.modifiedCount !== 1) return res.status(401).end();
 
         res.redirect(200, 'auth/login');
-    })
+    };)
 );
 
 export default handler;

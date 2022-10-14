@@ -11,6 +11,8 @@ const handler = rest.post(
         if (!token || !newPassword || !email || !checkUser(email, newPassword))
             return res.status(400).end();
 
+        res.setHeader('Cache-Control', 'no-store'); // prevent cache response
+
         const salt = randomBytes(16).toString('base64');
         const hashedPassword = await storePsw(newPassword, salt); // need to fix. storePsw might reject in which case an error will be thrown
 
