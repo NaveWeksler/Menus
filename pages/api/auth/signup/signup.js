@@ -10,7 +10,7 @@ const handler = rest.post(
     withDB(async (req, res) => {
         //test
         const { email, password, name, lastName } = req.body;
-        console.log('TEST');
+
         if (!validUser(email, password, name, lastName))
             return res.status(400).end();
 
@@ -18,9 +18,6 @@ const handler = rest.post(
 
         const salt = randomBytes(16).toString('base64');
         const hashPsw = await storePsw(password, salt); // need to fix. storePsw might reject in which case an error will be thrown
-
-        debug('query: email %s full name: %s %s', email, name, lastName);
-
         const emailToken = randomBytes(3).toString('hex');
 
         sendHTML(
@@ -29,9 +26,11 @@ const handler = rest.post(
                 .split('')
                 .join(
                     ' '
-                )}</strong></p><p>Didnt register an account? dont worry you dont have to do anything.</p></div>`,
+                )}</strong></p><p>If you did not registerd an account you dont need to do anything</p></div>`,
             email
         );
+
+        debug('query: email %s full name: %s %s', email, name, lastName);
 
         const status = await User.updateOne(
             { email },
