@@ -24,10 +24,12 @@ const handler = rest.post(
         const userToAuth = await User.findOne({ email })
             .select('password salt')
             .lean();
+
         debug('account found. compare with request');
+
         if (
             !userToAuth ||
-            !comparePsw(password, userToAuth.password, userToAuth.salt)
+            !(await comparePsw(password, userToAuth.password, userToAuth.salt))
         ) {
             return res.status(401).end();
         }
