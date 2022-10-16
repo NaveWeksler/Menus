@@ -1,6 +1,8 @@
 import { withDB } from './middleware';
 import User from 'lib/models/user';
 const debug = require('debug')('menus:auth');
+import {authRequest} from "lib/types/types"
+import { NextApiResponse, GetServerSideProps, NextApiRequest } from 'next';
 
 /**
  * Permission Guide
@@ -16,6 +18,7 @@ const debug = require('debug')('menus:auth');
  *
  */
 
+
 /**
  *
  * @param {Int} routeID the number associated with the route. (used for authorization)
@@ -24,8 +27,8 @@ const debug = require('debug')('menus:auth');
  * any rest request is allowed. CSRF check is required unless GET request
  * IMPORTANT - uses withDB by default.
  */
-const withAuth = (routeID, next) =>
-    withDB(async (req, res) => {
+const withAuth = (routeID: number, next: (req: authRequest, res: NextApiResponse) => any) =>
+    withDB(async (req: authRequest, res) => {
         const sessionToken = req.cookies['sessionToken'];
         const csrfCookie = req.cookies['csrfToken'];
         const csrfBody = req.body?.csrfToken;
@@ -59,9 +62,9 @@ const withAuth = (routeID, next) =>
         if (!user.permissions.includes(routeID)) {
             debug(
                 'user permission',
-                user.permission,
+                user.permissions,
                 ', required',
-                permissions
+                routeID
             );
             return res.redirect(403, '/');
         }
@@ -75,11 +78,11 @@ const withAuth = (routeID, next) =>
  * @param {Int} routeID the number associated with the route. (used for authorization)
  * @param {*} next the original 'getServerSideProps' function
  */
-export const withAuthSSR = (routeID, next) => (context) => {
-    const { req, res } = context;
-    console.log(req.cookies);
+export const withAuthSSR = (routeID: number, next: GetServerSideProps ): GetServerSideProps => (context) => {
+    const req = context.req;
+    const res = context.res as typeof context.res & {redirect: (status: number, to: string) => any};
 
-    res.redirect = (_, to) => ({
+    res.redirect = (_, to: string) => ({
         redirect: {
             //ignore status if its possible to add status change it.
             destination: to,
@@ -89,7 +92,7 @@ export const withAuthSSR = (routeID, next) => (context) => {
 
     return withAuth(routeID, () => {
         return next(context);
-    })(req, res);
+    })(req as NextApiRequest, res as NextApiResponse);
 };
 
 export default withAuth;

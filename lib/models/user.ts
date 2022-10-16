@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
+import User from "lib/types/user";
 
-const userSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema<User>(
     {
         firstName: {
             type: String,
@@ -16,7 +17,6 @@ const userSchema = new mongoose.Schema(
             type: String,
             unique: true,
             required: true,
-            unique: true,
         },
         password: {
             type: String,
@@ -50,5 +50,5 @@ userSchema.index(
     } //
 ); // auto delete after 2 minutes if account has not been verified
 
-export default mongoose.models.User || mongoose.model('User', userSchema);
+export default mongoose.models.User as mongoose.Model<User> || mongoose.model('User', userSchema);
 mongoose.models.User.syncIndexes();

@@ -6,11 +6,11 @@ const emailRegex =
         )},${parseInt(process.env.NEXT_PUBLIC_MAX_PASSWORD)}}$`
     );
 
-export const checkUser = (email, password) => {
+export const checkUser = (email: string, password: string) => {
     return emailRegex.test(email) && passwordRegex.test(password);
 };
 
-export const validUser = (email, password, name, lastName) => {
+export const validUser = (email: string, password: string, name: string, lastName: string) => {
     return (
         checkUser(email, password) &&
         /^[a-zA-Z]{2,10}$/.test(name) &&

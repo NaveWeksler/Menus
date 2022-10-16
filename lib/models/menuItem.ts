@@ -1,7 +1,16 @@
-import { ObjectId } from 'mongodb';
+
 import mongoose from 'mongoose';
 
-const menuItemSchema = new mongoose.Schema({
+interface IMenuItem {
+    menu: mongoose.Schema.Types.ObjectId,
+    name: string,
+    price: string,
+    image: string,
+    additions?: {[key: string]: [string]},
+    description?: string 
+}
+
+const menuItemSchema = new mongoose.Schema<IMenuItem>({
     menu: { type: mongoose.Schema.Types.ObjectId, required: true },
     name: {
         type: String,
@@ -19,5 +28,5 @@ const menuItemSchema = new mongoose.Schema({
     description: String,
 });
 
-export default mongoose.models.MenuItem ||
+export default mongoose.models.MenuItem as mongoose.Model<IMenuItem> ||
     mongoose.model('MenuItem', menuItemSchema);

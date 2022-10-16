@@ -1,4 +1,4 @@
-const { withDB, rest } = require('lib/util/middleware');
+import {withDB, rest} from "lib/util/middleware";
 import User from 'lib/models/user';
 import { validUser } from 'lib/auth/userValidator';
 import { storePsw } from 'lib/auth/pswStorage';
@@ -55,7 +55,7 @@ const handler = rest.post(
         }
 
         res.redirect(201, 'auth/signup/validate?email=' + email);
-    };)
+    })
 );
 
 export default handler;
