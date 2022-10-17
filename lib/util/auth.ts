@@ -78,7 +78,7 @@ const withAuth = (routeID: number, next: (req: authRequest, res: NextApiResponse
  * @param {Int} routeID the number associated with the route. (used for authorization)
  * @param {*} next the original 'getServerSideProps' function
  */
-export const withAuthSSR = (routeID: number, next: GetServerSideProps ): GetServerSideProps => (context) => {
+export const withSSRAuth = (routeID: number, next: GetServerSideProps ): GetServerSideProps => (context) => {
     const req = context.req;
     const res = context.res as typeof context.res & {redirect: (status: number, to: string) => any};
 
