@@ -1,7 +1,7 @@
-import debug from 'debug';
 import MenuItem from 'lib/models/menuItem';
+import mongoose from 'mongoose';
 
-export const toMenuItems = async (menu, items) => {
+export const toMenuItems: (menu: string, items: [{name: string, description: string, price: string, image: string, menu: string}]) => Promise<mongoose.Types.ObjectId[]> = async (menu, items)  => {
     // each item has price, name, description. if image is given, add it to public.
     //TODO: add checks for additions.
     const validItems = items.map((item) => {
@@ -19,7 +19,7 @@ export const toMenuItems = async (menu, items) => {
     return dbItems.map((obj) => obj._id);
 };
 
-const handleImage = (image) => {
+const handleImage = (image: string) => {
     console.log(image);
     return '/images/hamburger.png';
 };
