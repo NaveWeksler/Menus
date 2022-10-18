@@ -5,7 +5,7 @@ const debug = require('debug')('menus:verifyEmail');
 const handler = rest.post(withDB(
     async (req, res) => {
         const { email, token } = req.body;
-        debug(email, token);
+        debug(email, token, req.body, typeof req.body);
         if (!email || !token) return res.status(400).end();
 
         res.setHeader('Cache-Control', 'no-store'); // prevent cache response
