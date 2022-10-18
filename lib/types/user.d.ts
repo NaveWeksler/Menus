@@ -5,7 +5,7 @@ interface User {
     lastName: string,
     email: string,
     password: string,
-    orders: [Schema.Types.ObjectId],
+    orders: [mongoose.Types.ObjectId],
     permissions: [number],
 
     salt?: string,
@@ -16,7 +16,7 @@ interface User {
     state?: number,
 }
 
-type UserModel = User & {_id: mongoose.Types.ObjectId};
 
-export const UserModel;
+
+export type UserModel = User & {_id: mongoose.Types.ObjectId};
 export default User;
