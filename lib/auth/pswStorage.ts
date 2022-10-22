@@ -1,5 +1,4 @@
-import { rejects } from 'assert';
-import { scrypt, randomBytes } from 'crypto';
+import { scrypt } from 'crypto';
 const debug = require('debug')('pswStorage');
 
 export const comparePsw = async (plainPsw: string, storedHashedPsw: string, salt: string) => {

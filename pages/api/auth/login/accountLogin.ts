@@ -13,7 +13,6 @@ const maxAgeSec = parseInt(process.env.SESSION_EXP_MS) / 1000;
 
 const handler = rest.post(
     withDB(async (req, res) => {
-        debug('BODY: %O', req.body);
         const { email, password } = req.body;
 
         if (!email || !password || !checkUser(email, password)) {
