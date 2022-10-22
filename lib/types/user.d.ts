@@ -18,5 +18,5 @@ interface User {
 
 
 
-export type UserModel = User & {_id: mongoose.Types.ObjectId};
+export type UserModel = mongoose.LeanDocument<User & {_id: mongoose.Types.ObjectId}>;
 export default User;

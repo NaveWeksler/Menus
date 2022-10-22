@@ -12,7 +12,7 @@ const handler = withAuth(1, async (req, res) => {
 
     if (!req.body || !req.body.menu) return res.status(400).end();
 
-    if (req.user.permission !== 0) {
+    if (!req.user.permissions.includes(-1)) {
         debug('user is not admin. query for user menu');
         const exists = await Menu.exists({
             owner: req.user._id.toString(),

@@ -7,6 +7,7 @@ import { NextApiResponse, GetServerSideProps, NextApiRequest } from 'next';
 /**
  * Permission Guide
  * each api route has ID as a number (starting from 0)
+ * special permissions are negetive (for example edit all menus is -1)
  * every user has an array of numbers which are IDs of api routes.
  * Example:  show owner permission is just [1, 3] (and more in the future)
  *
@@ -16,6 +17,8 @@ import { NextApiResponse, GetServerSideProps, NextApiRequest } from 'next';
  * 2 orders SSR page
  * 3 create Menu route
  *
+ * special:
+ * -1 edit all menus
  */
 
 
