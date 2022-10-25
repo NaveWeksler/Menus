@@ -19,7 +19,7 @@ const CartItem = ({
             <div className='flex flex-col flex-1 pl-2 overflow-hidden'>
                 <div className='flex flex-col flex-1 justify-between text-right px-2 py-0.5'>
                     <p className='text-light-3 font-medium'>{name}</p>
-                    <p className='pb-0.5 text-xs font-light text-gray-600 truncate'>
+                    <p className='pb-0.5 text-sm font-light text-gray-600 truncate'>
                         {description}
                     </p>
                 </div>
