@@ -1,6 +1,6 @@
-import connect from 'lib/mongoHandler';
+import connect from 'lib/api/mongoHandler';
 import { NextApiRequest, NextApiResponse } from 'next';
-import {nextFunction} from "lib/types/types";
+import {nextFunction} from "lib/api/types/types";
 
 export const withDB = (next: nextFunction) => async (req: NextApiRequest, res: NextApiResponse) => {
     await connect();

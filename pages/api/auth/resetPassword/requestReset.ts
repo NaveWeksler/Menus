@@ -1,7 +1,7 @@
-import { rest, withDB } from 'lib/util/middleware';
-import sendHTML from 'lib/util/emailHandler';
+import { rest, withDB } from 'lib/api/util/middleware';
+import sendHTML from 'lib/api/util/emailHandler';
 import { randomBytes } from 'crypto';
-import User from 'lib/models/user';
+import User from 'lib/api/models/user';
 const debug = require('debug')('menus:requestReset');
 
 // reset password. send email with token to reset password

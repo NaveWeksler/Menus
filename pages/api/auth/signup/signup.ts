@@ -1,9 +1,9 @@
-import {withDB, rest} from "lib/util/middleware";
-import User from 'lib/models/user';
-import { validUser } from 'lib/auth/userValidator';
-import { storePsw } from 'lib/auth/pswStorage';
+import {withDB, rest} from "lib/api/util/middleware";
+import User from 'lib/api/models/user';
+import { validUser } from 'lib/api/auth/userValidator';
+import { storePsw } from 'lib/api/auth/pswStorage';
 import { randomBytes } from 'crypto';
-import sendHTML from 'lib/util/emailHandler';
+import sendHTML from 'lib/api/util/emailHandler';
 const debug = require('debug')('menus:signup');
 
 const handler = rest.post(

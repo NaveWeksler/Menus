@@ -1,4 +1,4 @@
-import {UserModel} from "lib/types/user";
+import {UserModel} from "lib/api/types/user";
 
 import { NextApiRequest, NextApiResponse } from 'next';
 

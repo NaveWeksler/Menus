@@ -1,7 +1,7 @@
 import { withDB } from './middleware';
-import User from 'lib/models/user';
+import User from 'lib/api/models/user';
 const debug = require('debug')('menus:auth');
-import {authRequest} from "lib/types/types"
+import {authRequest} from "lib/api/types/types"
 import { NextApiResponse, GetServerSideProps, NextApiRequest } from 'next';
 
 /**

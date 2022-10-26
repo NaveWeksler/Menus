@@ -1,6 +1,12 @@
 import mongoose from 'mongoose';
 
-const menuSchema = new mongoose.Schema({
+interface IMenu {
+    owner: mongoose.Schema.Types.ObjectId,
+    title: string,
+    items: mongoose.Schema.Types.ObjectId[]
+}
+
+const menuSchema = new mongoose.Schema<IMenu>({
     owner: {
         // the user who owns this menu
         type: mongoose.Schema.Types.ObjectId,
@@ -13,8 +19,9 @@ const menuSchema = new mongoose.Schema({
     },
     items: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'MenuItem' }],
-        required: true,
+        required: false,
+        default: [],
     },
 });
 
-export default mongoose.models.Menu || mongoose.model('Menu', menuSchema);
+export default mongoose.models.Menu as mongoose.Model<IMenu> || mongoose.model('Menu', menuSchema);

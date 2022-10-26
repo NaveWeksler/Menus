@@ -1,5 +1,5 @@
-import User from 'lib/models/user';
-import { rest, withDB } from 'lib/util/middleware';
+import User from 'lib/api/models/user';
+import { rest, withDB } from 'lib/api/util/middleware';
 const debug = require('debug')('menus:verifyEmail');
 
 const handler = rest.post(withDB(

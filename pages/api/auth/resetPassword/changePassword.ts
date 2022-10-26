@@ -1,7 +1,7 @@
-import User from 'lib/models/user';
-import { storePsw } from 'lib/auth/pswStorage';
-import { checkUser } from 'lib/auth/userValidator';
-import { rest, withDB } from 'lib/util/middleware';
+import User from 'lib/api/models/user';
+import { storePsw } from 'lib/api/auth/pswStorage';
+import { checkUser } from 'lib/api/auth/userValidator';
+import { rest, withDB } from 'lib/api/util/middleware';
 import { randomBytes } from 'crypto';
 const debug = require('debug')('menus:changePassword');
 

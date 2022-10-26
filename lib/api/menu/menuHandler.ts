@@ -1,4 +1,4 @@
-import MenuItem from 'lib/models/menuItem';
+import MenuItem from 'lib/api/models/menuItem';
 import mongoose from 'mongoose';
 
 export const toMenuItems: (menu: string, items: [{name: string, description: string, price: string, image: string, menu: string}]) => Promise<mongoose.Types.ObjectId[]> = async (menu, items)  => {

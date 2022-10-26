@@ -1,12 +1,12 @@
-import { rest, withDB } from 'lib/util/middleware';
-import User from 'lib/models/user';
+import { rest, withDB } from 'lib/api/util/middleware';
+import User from 'lib/api/models/user';
 import {
     getCSRFToken,
     getSessionToken,
     getSessionExpireMs,
-} from 'lib/auth/tokenHandler';
-import { checkUser } from 'lib/auth/userValidator';
-import { comparePsw } from 'lib/auth/pswStorage';
+} from 'lib/api/auth/tokenHandler';
+import { checkUser } from 'lib/api/auth/userValidator';
+import { comparePsw } from 'lib/api/auth/pswStorage';
 const debug = require('debug')('menus:accountLogin');
 
 const maxAgeSec = parseInt(process.env.SESSION_EXP_MS) / 1000;
