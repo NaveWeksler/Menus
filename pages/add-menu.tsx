@@ -3,43 +3,51 @@ import { useState } from 'react';
 import EditMenuItem from 'components/EditMenuItem';
 import {NextPage} from "next";
 import fetcher from "lib/frontend/fetcher";
+import {Input, Output} from "lib/contract/createMenu";
+import Link from 'next/link';
+
 
 type IHandleSubmit = (event: React.FormEvent<EventTarget>) => void;
 
 const AddMenu = () => {
-    const [created, setCreated] = useState<boolean>(false);
-    const [id, setId] = useState<string>("");
+    const [created, setCreated] = useState(false);
+    const [id, setId] = useState("");
     const [items, setItems] = useState<JSX.Element[]>([]);
+    const [error, setError] = useState(0);
 
     const addItem = () => {
         setItems([...items, <EditMenuItem key={items.length.toString()} />]);
     };
 
-    const handleSubmit: IHandleSubmit = (event) => {
+    const handleSubmit: IHandleSubmit = async (event) => {
         event.preventDefault();
         // console.log("handleSubmit title: ", event.target.elements);
         // fetcher.post("/api/menu/createMenu", {body: {title: event.currentTarget[0].value}})
         console.log(((event.target as HTMLFormElement).elements.namedItem("title") as HTMLInputElement).value);
 
-        // fetch('/api/menu/createMenu', {
-        //     method: 'post',
-        //     body: data,
-        //     headers: {
-        //         'Content-Type': 'multipart/form-data',
-        //     },
-        // });
-        
+        const {json, status} = await fetcher.post<Input, Output>("/api/menu/createMenu", {
+            body: {
+                title: ((event.target as HTMLFormElement).elements.namedItem("title") as HTMLInputElement).value
+            }
+        }); 
+
+        if (status === 201) {
+            setCreated(true); 
+            setId(json.id);
+        }  else if (status === 403) {
+            setError(403);
+        }
     };
 
     return (
         <div className="flex items-center justify-center flex-col">
             <h6 className="my-5">{created ? "Step 2 Add Items. (You Can Do It Later In the 'EditMenu' page)" : "Step 1 Create Menu"}</h6>
-            {created ? <EditMenu /> : <CreateMenu onSubmit={handleSubmit}/>}
+            {created ? <EditMenu /> : <CreateMenu onSubmit={handleSubmit} error={error}/>}
         </div>
     );
 };
 
-const CreateMenu: NextPage<{onSubmit: IHandleSubmit}> = ({onSubmit}) => (
+const CreateMenu: NextPage<{onSubmit: IHandleSubmit, error: number}> = ({onSubmit, error}) => (
     <form onSubmit={onSubmit} className="flex items-center justify-evenly mx-5">
         <div>
             <label
@@ -53,6 +61,7 @@ const CreateMenu: NextPage<{onSubmit: IHandleSubmit}> = ({onSubmit}) => (
                 name='title'
                 className='inline shadow border appearance-none rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
             />
+            <small>{error === 403 && <strong>You Already Have a Menu With This Title. Edit it <Link href="edit-menu"><a>Here</a></Link></strong>}</small>
         </div>
         <button type='submit' className="bg-gray-100 p-2 ml-5">Create</button>
     </form>

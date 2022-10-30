@@ -1,5 +1,5 @@
-import withAuth from 'lib/util/auth';
-import Order from 'lib/models/order';
+import withAuth from 'lib/api/util/auth';
+import Order from 'lib/api/models/order';
 import MenuItem from 'components/MenuItem';
 const debug = require('debug')('menus:addOrder');
 

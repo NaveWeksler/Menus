@@ -1,10 +1,14 @@
-import withAuth from 'lib/util/auth';
-import Menu from 'lib/models/menu';
-import { validateTitle } from 'lib/menu/menuValidator';
-import menuItem from 'lib/models/menuItem';
+import withAuth from 'lib/api/util/auth';
+import Menu from 'lib/api/models/menu';
+import { validateTitle } from 'lib/api/menu/menuValidator';
+import menuItem from 'lib/api/models/menuItem';
+import { withContract } from 'lib/api/util/middleware';
+import { Input, Output, validator } from 'lib/contract/editMenu';
+import { AuthRequest } from 'lib/api/types/types';
+import mongoose from 'mongoose';
 const debug = require('debug')('menus:editMenu');
 
-const handler = withAuth(1, async (req, res) => {
+const handler = withAuth(1, withContract<Input, Output, AuthRequest>(async (req, res) => {
     // two cases. 1. user changes text, 2. user changes images. 1 and 2 wont be in same request.
     if (req.headers['content-type'] !== 'application/json') {
         return res.status(400).json({ error: 'Expected application/json' });
@@ -41,7 +45,7 @@ const handler = withAuth(1, async (req, res) => {
             )
             .map((item) => ({
                 updateOne: {
-                    filter: { _id: item._id, menu: req.body.menu },
+                    filter: { _id: new mongoose.Types.ObjectId(item._id), menu: new mongoose.Types.ObjectId(req.body.menu) },
                     update: {
                         $set: {
                             // ...(expression) && {object} adds property only if (expression) is true.
@@ -55,11 +59,13 @@ const handler = withAuth(1, async (req, res) => {
                 },
             }));
         debug('items: %O', updates, 'query to change');
-        const status = await menuItem.bulkWrite(updates);
+
+        // @ts-ignore
+        const status = await menuItem.bulkWrite(updates); // added ignore. error with types
         debug('change items status: %o', status);
     }
 
     res.status(200).end();
-});
+}, validator));
 
 export default handler;
