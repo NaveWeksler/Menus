@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 interface IMenu {
-    owner: mongoose.Schema.Types.ObjectId,
+    owner: mongoose.Types.ObjectId,
     title: string,
     items: mongoose.Schema.Types.ObjectId[]
 }

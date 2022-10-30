@@ -1,7 +1,7 @@
 import { withDB } from './middleware';
 import User from 'lib/api/models/user';
 const debug = require('debug')('menus:auth');
-import {authRequest} from "lib/api/types/types"
+import {AuthRequest} from "lib/api/types/types"
 import { NextApiResponse, GetServerSideProps, NextApiRequest } from 'next';
 
 /**
@@ -30,8 +30,8 @@ import { NextApiResponse, GetServerSideProps, NextApiRequest } from 'next';
  * any rest request is allowed. CSRF check is required unless GET request
  * IMPORTANT - uses withDB by default.
  */
-const withAuth = (routeID: number, next: (req: authRequest, res: NextApiResponse) => any) =>
-    withDB(async (req: authRequest, res) => {
+const withAuth = (routeID: number, next: (req: AuthRequest, res: NextApiResponse) => any) =>
+    withDB(async (req, res) => {
         const sessionToken = req.cookies['sessionToken'];
         const csrfCookie = req.cookies['csrfToken'];
         const csrfBody = req.body?.csrfToken;
@@ -55,7 +55,7 @@ const withAuth = (routeID: number, next: (req: authRequest, res: NextApiResponse
         const user = await User.findOne({ sessionToken }).lean().exec();
         console.log(user);
         debug('got user. check authorized');
-        if (!user || new Date().getTime() > user.sessionTokenExpMs) {
+        if (!user || !user.sessionTokenExpMs || new Date().getTime() > user.sessionTokenExpMs) {
             debug('cannot auth with non valid session');
             return res.redirect(401, '/auth/login');
         }
@@ -72,8 +72,9 @@ const withAuth = (routeID: number, next: (req: authRequest, res: NextApiResponse
             return res.redirect(403, '/');
         }
         debug('authorized user. next');
-        req.user = user;
-        return next(req, res);
+        
+        const authReq = {...req, user} as AuthRequest
+        return next(authReq, res);
     });
 
 /**

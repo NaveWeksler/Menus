@@ -67,3 +67,5 @@ const Signup: NextPage = (props) => {
         </div>
     );
 }
+
+export default Signup;

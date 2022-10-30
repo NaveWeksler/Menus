@@ -8,7 +8,7 @@ interface User {
     orders: [mongoose.Types.ObjectId],
     permissions: [number],
 
-    salt?: string,
+    salt: string,
     sessionToken?: string,
     sessionTokenExpMs?: number,
     emailToken?: string,

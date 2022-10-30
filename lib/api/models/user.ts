@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema<User>(
             type: [Number],
             required: true,
         },
-        salt: String,
+        salt: {type: String, default: ""},
         sessionToken: String,
         sessionTokenExpMs: Number,
         emailToken: String,

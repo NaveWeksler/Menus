@@ -1,6 +1,6 @@
 import Order from 'components/Order';
 import Link from 'next/link';
-import { withSSRAuth } from 'lib/util/auth';
+import { withSSRAuth } from 'lib/api/util/auth';
 
 const debug = require('debug')('menus:orders');
 

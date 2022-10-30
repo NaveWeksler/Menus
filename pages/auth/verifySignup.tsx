@@ -1,21 +1,21 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const VerifySignup: NextPage = (props) => {
     const {email} = useRouter().query; //
     const [token, setToken] = useState("");
 
-    const moveForword = (event) => {
+    const moveForword = (event: React.FormEvent<HTMLInputElement>) => {
 
-        if (event.target.value.length === 1) {
-            setToken(token + event.target.value);
-            if (event.target.nextElementSibling) event.target.nextElementSibling.focus();
+        if (event.currentTarget.value.length === 1) {
+            setToken(token + event.currentTarget.value);
+            if (event.currentTarget.nextElementSibling) (event.currentTarget.nextElementSibling as HTMLInputElement).focus();
         }
     }
 
-    const moveBackward = (event) => {
-        if (event.key === "Backspace" && event.target.value.length === 0 && event.target.previousElementSibling) event.target.previousElementSibling.focus();
+    const moveBackward = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Backspace" && event.currentTarget.value.length === 0 && event.currentTarget.previousElementSibling) (event.currentTarget.previousElementSibling as HTMLInputElement).focus();
     }
 
     const verify = () => {
