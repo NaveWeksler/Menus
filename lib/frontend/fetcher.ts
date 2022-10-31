@@ -1,21 +1,26 @@
 
 const fetcher = {
-    post: <Input, Output>(url: string, args: (Omit<RequestInit, "body"> & {body: Input})) => {
-        const argsInclude: RequestInit = {...args, body: JSON.stringify(args.body)}; // convert args to RequestInit to send
-
+    post: <Input=any, Output=any>(url: string, args: (Omit<RequestInit, "body"> & {body: Input})) => {
         return new Promise<{json: Output, status: number}>(async resolve => {
             const res = await fetch(url, {
                 method: "post",
                 headers: {
-                    "content-type": "application/json"
+                    "content-type": "application/json",
+                    "csrf": "true" // csrf header defense for same origin
                 },
-                ...argsInclude
+                ...args,
+                body: JSON.stringify({
+                    ...args.body
+                }) // overwrite args.body and body to string
+                
             });
-            const json = await res.json() as Output;
-            resolve({json, status: res.status});
+
+            const json = res.headers.get("content-type") === "application/json" ?  await res.json() as Output : null as Output;
+            
+            return resolve({json, status: res.status});
+            
         }); // not done
     },
-    csrfToken: "",
 }
 
 export default fetcher;

@@ -19,6 +19,7 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
+        "ts:dev": "npx tsc --watch --noEmit --incremental",
         "test:unit": "npx tsc --outDir testBuild --noEmit false --allowJs true --module commonjs & jest"
     },
     "devDependencies": {

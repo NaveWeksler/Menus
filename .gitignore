@@ -11,3 +11,4 @@ testBuild
 .env.production
 .env.test
 **.rest
+tsconfig.tsbuildinfo

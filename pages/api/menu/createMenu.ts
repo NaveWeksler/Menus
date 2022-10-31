@@ -23,7 +23,7 @@ const createMenu = withAuth(3, withContract<Input, Output>(async (req, res) => {
         }).select("_id").exec();    
         debug("query status: %o", doc);
         
-        if (!doc) return res.status(403).end();
+        if (!doc) return res.status(409).end();
 
         res.status(201).json({id: doc._id.toString()});
         

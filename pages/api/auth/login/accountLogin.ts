@@ -1,7 +1,6 @@
 import { rest, withDB } from 'lib/api/util/middleware';
 import User from 'lib/api/models/user';
 import {
-    getCSRFToken,
     getSessionToken,
     getSessionExpireMs,
 } from 'lib/api/auth/tokenHandler';
@@ -36,8 +35,7 @@ const handler = rest.post(
         debug('valid request, update session');
 
         const sessionToken = getSessionToken(),
-            sessionTokenExpMs = getSessionExpireMs(),
-            csrfToken = getCSRFToken();
+            sessionTokenExpMs = getSessionExpireMs();
 
         const status = await User.updateOne(
             { _id: userToAuth._id },
@@ -50,15 +48,10 @@ const handler = rest.post(
                 sessionToken +
                 '; path=/;  samesite=strict; httponly; secure; Max-Age=' +
                 maxAgeSec +
-                ';',
-            'csrfToken=' +
-                csrfToken +
-                '; path=/;  samesite=strict; httponly; secure; Max-Age=' +
-                maxAgeSec +
-                ';',
+                ';'
         ]);
 
-        res.status(200).json({ csrfToken });
+        res.status(200).end();
     })
 );
 

@@ -34,8 +34,8 @@ const AddMenu = () => {
         if (status === 201) {
             setCreated(true); 
             setId(json.id);
-        }  else if (status === 403) {
-            setError(403);
+        }  else if (status === 409) {
+            setError(409);
         }
     };
 
@@ -61,7 +61,7 @@ const CreateMenu: NextPage<{onSubmit: IHandleSubmit, error: number}> = ({onSubmi
                 name='title'
                 className='inline shadow border appearance-none rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
             />
-            <small>{error === 403 && <strong>You Already Have a Menu With This Title. Edit it <Link href="edit-menu"><a>Here</a></Link></strong>}</small>
+            <small>{error === 409 && <strong>You Already Have a Menu With This Title. Edit it <Link href="edit-menu"><a>Here</a></Link></strong>}</small>
         </div>
         <button type='submit' className="bg-gray-100 p-2 ml-5">Create</button>
     </form>

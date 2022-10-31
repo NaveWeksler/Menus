@@ -33,8 +33,8 @@ import { NextApiResponse, GetServerSideProps, NextApiRequest } from 'next';
 const withAuth = (routeID: number, next: (req: AuthRequest, res: NextApiResponse) => any) =>
     withDB(async (req, res) => {
         const sessionToken = req.cookies['sessionToken'];
-        const csrfCookie = req.cookies['csrfToken'];
-        const csrfBody = req.body?.csrfToken;
+        // const csrfCookie = req.cookies['csrfToken'];
+        // const csrfBody = req.body?.csrfToken;
 
         if (!sessionToken) {
             debug('Session Token Missing');
@@ -42,8 +42,8 @@ const withAuth = (routeID: number, next: (req: AuthRequest, res: NextApiResponse
         }
 
         // check for csrf
-        if (req.method !== 'GET' && csrfCookie !== csrfBody) {
-            debug('csrf tokens are different');
+        if (req.method !== 'GET' && req.headers.csrf !== "true") {
+            debug('csrf header not found');
             return res.redirect(401, '/auth/login');
         }
 
