@@ -1,6 +1,12 @@
 import mongoose from 'mongoose';
 
-const orderSchema = new mongoose.Schema({
+interface Order {
+    items: mongoose.Types.ObjectId[],
+    menu: mongoose.Types.ObjectId,
+    time: Date,
+}
+
+const orderSchema = new mongoose.Schema<Order>({
     items: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'MenuItem' }],
         required: true,
@@ -16,4 +22,4 @@ const orderSchema = new mongoose.Schema({
     },
 });
 
-export default mongoose.models.Order || mongoose.model('Order', orderSchema);
+export default mongoose.models.Order as mongoose.Model<Order> || mongoose.model('Order', orderSchema);
