@@ -1,4 +1,4 @@
-import { rest, withDB } from 'lib/api/util/middleware';
+import { rest, withDB, withContract } from 'lib/api/util/middleware';
 import User from 'lib/api/models/user';
 import {
     getSessionToken,
@@ -6,12 +6,14 @@ import {
 } from 'lib/api/auth/tokenHandler';
 import { checkUser } from 'lib/api/auth/userValidator';
 import { comparePsw } from 'lib/api/auth/pswStorage';
+import { Input, Output, validator } from 'lib/contract/accountLogin';
+
 const debug = require('debug')('menus:accountLogin');
 
 const maxAgeSec = parseInt(process.env.SESSION_EXP_MS) / 1000;
 
 const handler = rest.post(
-    withDB(async (req, res) => {
+    withDB(withContract<Input, Output>(async (req, res) => {
         const { email, password } = req.body;
 
         if (!email || !password || !checkUser(email, password)) {
@@ -52,7 +54,6 @@ const handler = rest.post(
         ]);
 
         res.status(200).end();
-    })
-);
+    }, validator)));
 
 export default handler;

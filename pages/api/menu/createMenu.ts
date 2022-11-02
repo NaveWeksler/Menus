@@ -6,7 +6,7 @@ import {withContract} from "lib/api/util/middleware";
 import {validator, type Input, type Output} from 'lib/contract/createMenu';
 const debug = require('debug')('menus:createMenu');
 
-const createMenu = withAuth(3, withContract<Input, Output>(async (req, res) => {
+const createMenu = withAuth(withContract<Input, Output>(async (req, res) => {
         const owner = req.cookies["owner"], title = req.body.title;
         if (!owner || !validateTitle(title)) return res.status(400).end();
         debug("query and create menu");

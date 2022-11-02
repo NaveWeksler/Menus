@@ -5,7 +5,7 @@ import {AuthRequest} from "lib/api/types/types"
 import { NextApiResponse, GetServerSideProps, NextApiRequest } from 'next';
 
 /**
- * Permission Guide
+ * Permission Guide:
  * each api route has ID as a number (starting from 0)
  * special permissions are negetive (for example edit all menus is -1)
  * every user has an array of numbers which are IDs of api routes.
@@ -21,6 +21,12 @@ import { NextApiResponse, GetServerSideProps, NextApiRequest } from 'next';
  * -1 edit all menus
  */
 
+const ROUTESID: {[key: string]: number} = { // only routes
+    "/api/menu/editMenu": 1,
+    "/orders": 2,
+    "/api/createMenu": 3,
+};
+Object.freeze(ROUTESID);
 
 /**
  *
@@ -30,11 +36,13 @@ import { NextApiResponse, GetServerSideProps, NextApiRequest } from 'next';
  * any rest request is allowed. CSRF check is required unless GET request
  * IMPORTANT - uses withDB by default.
  */
-const withAuth = (routeID: number, next: (req: AuthRequest, res: NextApiResponse) => any) =>
+const withAuth = (next: (req: AuthRequest, res: NextApiResponse) => any) =>
     withDB(async (req, res) => {
+        console.log(req.url, );
         const sessionToken = req.cookies['sessionToken'];
         // const csrfCookie = req.cookies['csrfToken'];
         // const csrfBody = req.body?.csrfToken;
+        if (!req.url) return res.status(500).end();
 
         if (!sessionToken) {
             debug('Session Token Missing');
@@ -60,14 +68,16 @@ const withAuth = (routeID: number, next: (req: AuthRequest, res: NextApiResponse
             return res.redirect(401, '/auth/login');
         }
 
+        
         // valid user
         debug('authenticated user');
-        if (!user.permissions.includes(routeID)) {
+        const requestUrl = req.url.split("?")[0]; // get url pathname (http://localhost:3000/abc/d?a=b ==> abc/d)
+        if (!user.permissions.includes(ROUTESID[requestUrl])) {
             debug(
                 'user permission',
                 user.permissions,
                 ', required',
-                routeID
+                requestUrl
             );
             return res.redirect(403, '/');
         }
@@ -82,7 +92,7 @@ const withAuth = (routeID: number, next: (req: AuthRequest, res: NextApiResponse
  * @param {Int} routeID the number associated with the route. (used for authorization)
  * @param {*} next the original 'getServerSideProps' function
  */
-export const withSSRAuth = (routeID: number, next: GetServerSideProps ): GetServerSideProps => (context) => {
+export const withSSRAuth = (next: GetServerSideProps ): GetServerSideProps => (context) => {
     const req = context.req;
     const res = context.res as typeof context.res & {redirect: (status: number, to: string) => any};
 
@@ -94,7 +104,7 @@ export const withSSRAuth = (routeID: number, next: GetServerSideProps ): GetServ
         },
     });
 
-    return withAuth(routeID, () => {
+    return withAuth(() => {
         return next(context);
     })(req as NextApiRequest, res as NextApiResponse);
 };

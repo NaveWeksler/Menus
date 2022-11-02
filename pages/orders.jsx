@@ -26,7 +26,7 @@ const Orders = ({ orders }) => {
     );
 };
 
-export const getServerSideProps = withSSRAuth(2, ({ req, res }) => {
+export const getServerSideProps = withSSRAuth(({ req, res }) => {
     return {
         props: {
             orders: [

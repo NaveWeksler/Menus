@@ -1,13 +1,14 @@
-import {withDB, rest} from "lib/api/util/middleware";
+import {withDB, rest, withContract} from "lib/api/util/middleware";
 import User from 'lib/api/models/user';
 import { validUser } from 'lib/api/auth/userValidator';
 import { storePsw } from 'lib/api/auth/pswStorage';
 import { randomBytes } from 'crypto';
 import sendHTML from 'lib/api/util/emailHandler';
 const debug = require('debug')('menus:signup');
+import {Input, Output, validator} from "lib/contract/signup";
 
 const handler = rest.post(
-    withDB(async (req, res) => {
+    withDB(withContract<Input, Output>(async (req, res) => {
         //test
         const { email, password, name, lastName } = req.body;
 
@@ -55,7 +56,7 @@ const handler = rest.post(
         }
 
         res.redirect(201, 'auth/signup/validate?email=' + email);
-    })
+    }, validator))
 );
 
 export default handler;

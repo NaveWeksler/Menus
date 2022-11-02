@@ -8,7 +8,7 @@ import { AuthRequest } from 'lib/api/types/types';
 import mongoose from 'mongoose';
 const debug = require('debug')('menus:editMenu');
 
-const handler = withAuth(1, withContract<Input, Output, AuthRequest>(async (req, res) => {
+const handler = withAuth(withContract<Input, Output, AuthRequest>(async (req, res) => {
     // two cases. 1. user changes text, 2. user changes images. 1 and 2 wont be in same request.
     if (req.headers['content-type'] !== 'application/json') {
         return res.status(400).json({ error: 'Expected application/json' });
