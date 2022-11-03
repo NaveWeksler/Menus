@@ -13,7 +13,7 @@ const expectMethod = (next: nextFunction, type: string) => (req: NextApiRequest,
         res.status(400).json({ error: `Expected ${type} Request` });
         return;
     }
-    next(req, res);
+    return next(req, res);
 };
 
 /**

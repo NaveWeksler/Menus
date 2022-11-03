@@ -15,7 +15,7 @@ const maxAgeSec = parseInt(process.env.SESSION_EXP_MS) / 1000;
 const handler = rest.post(
     withDB(withContract<Input, Output>(async (req, res) => {
         const { email, password } = req.body;
-
+        
         if (!email || !password || !checkUser(email, password)) {
             return res.status(400).end();
         }
@@ -53,7 +53,7 @@ const handler = rest.post(
                 ';'
         ]);
 
-        res.status(200).end();
+        return res.status(200).end();
     }, validator)));
 
 export default handler;

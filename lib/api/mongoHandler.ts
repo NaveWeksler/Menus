@@ -19,10 +19,15 @@ if (!process.env.MONGODB_URI) {
  * DEVELOPMENT CODE - REMOVE IN PRODUCTION
  * cach connection for reloads in devlopment.
  */
-let cached = global.mongoose;
+
+declare global {
+    var mongoose: {conn: typeof mongoose | null, promise: Promise<typeof mongoose> | null}
+}
+
+let cached: {conn: typeof mongoose | null, promise: Promise<typeof mongoose> | null} = global.mongoose as {conn: typeof mongoose | null, promise: Promise<typeof mongoose> | null};
 if (!cached) {
     cached = { conn: null, promise: null };
-    global.mongoose = cached;
+    global.mongoose = cached as typeof global.mongoose;
 }
 
 const connectMongoose = () => {
@@ -33,7 +38,7 @@ const connect = async () => {
     if (cached.conn) return cached.conn;
 
     if (!cached.promise) {
-        connectMongoose().then((mon) => {
+        cached.promise = connectMongoose().then((mon) => {
             return mon;
         });
     }
