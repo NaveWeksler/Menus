@@ -1,4 +1,4 @@
-export const validateItems = (items) => {
+export const validateItems = (items: {name: string, description: string, price: string}[]) => {
     /*
         * validate each item is following this model:
         * {
@@ -22,6 +22,6 @@ export const validateItems = (items) => {
     return true;
 };
 
-export const validateTitle = (title) => {
+export const validateTitle = (title: string) => {
     return /^[a-zA-Z1-9 ]{1,20}$/.test(title); // english or numbers only length 1 to 12
 };

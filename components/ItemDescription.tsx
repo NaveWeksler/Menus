@@ -3,7 +3,7 @@ import { BiMinus } from 'react-icons/bi';
 import Image from 'next/image';
 import { useState } from 'react';
 
-const ItemDescription = ({ name, description, price, image, _id, close }) => {
+const ItemDescription = ({ name, description, price, image, _id, close }: {close: () => void, name: string, description: string, price: number, image: string, _id: string}) => {
     const [quantity, setQuantity] = useState(1);
 
     const addItem = () => {

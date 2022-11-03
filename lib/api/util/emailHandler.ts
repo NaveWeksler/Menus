@@ -9,7 +9,7 @@ const transporter = createTransport({
     },
 });
 
-const sendHTML = (subject, html, to) => {
+const sendHTML = (subject: string, html: string, to: string) => {
     const mail = {
         from: process.env.EMAIL,
         to: to,

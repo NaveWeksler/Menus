@@ -3,7 +3,7 @@ import { BiUserCircle } from 'react-icons/bi';
 import { MdSettings } from 'react-icons/md';
 import { GrNotes } from 'react-icons/gr';
 
-const Navbar = ({ isOpen, close }) => {
+const Navbar = ({ isOpen, close }: {isOpen: boolean, close: () => void}) => {
     const data = [
         { name: 'כניסה', Icon: BiUserCircle },
         { name: 'הזמנות קודמות', Icon: GrNotes },

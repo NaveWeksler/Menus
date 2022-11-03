@@ -16,7 +16,7 @@ export const getMenusIds = async () => {
  * @param {String} id The id.
  * @returns The specific menu associated with the id.
  */
-export const getMenuData = async (id) => {
+export const getMenuData = async (id: string) => {
     await connect();
 
     const menu = await Menu.findById(id)

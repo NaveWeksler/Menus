@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import CartItem from './CartItem';
 
 const Cart = () => {
-    const [order, setOrder] = useState({
+    const [order, setOrder] = useState<{price: number, items: {description: string, image: string, name: string, quantity: number, price: number}[]}>({
         items: [],
         price: 0,
     });
@@ -15,7 +15,7 @@ const Cart = () => {
         }
     }, []);
 
-    const setQuantity = (index) => (newQuantity) => {
+    const setQuantity = (index: number) => (newQuantity: number) => {
         const newOrder = { ...order };
 
         const previousQuantity = newOrder.items[index].quantity;

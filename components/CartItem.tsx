@@ -9,7 +9,7 @@ const CartItem = ({
     image,
     quantity,
     setQuantity,
-}) => {
+}: {name: string, price: number, image: string, quantity: number, description: string, setQuantity: (newQuantity: number) => void}) => {
     return (
         <div className='flex justify-between h-24 py-2 shadow-theme overflow-hidden'>
             <div className='w-32 h-full relative rounded-lg overflow-hidden'>
