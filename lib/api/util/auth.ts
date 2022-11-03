@@ -2,7 +2,7 @@ import { withDB } from './middleware';
 import User from 'lib/api/models/user';
 const debug = require('debug')('menus:auth');
 import {AuthRequest} from "lib/api/types/types"
-import { NextApiResponse, GetServerSideProps, NextApiRequest } from 'next';
+import { NextApiResponse, GetServerSideProps, NextApiRequest, GetServerSidePropsContext } from 'next';
 
 /**
  * Permission Guide:
@@ -92,7 +92,7 @@ const withAuth = (next: (req: AuthRequest, res: NextApiResponse) => any) =>
  * @param {Int} routeID the number associated with the route. (used for authorization)
  * @param {*} next the original 'getServerSideProps' function
  */
-export const withSSRAuth = (next: GetServerSideProps ): GetServerSideProps => (context) => {
+export const withSSRAuth = <GetServerSidePropsType extends { [key: string]: any; }>(next: GetServerSideProps ): GetServerSideProps<GetServerSidePropsType> => async (context: GetServerSidePropsContext) => {
     const req = context.req;
     const res = context.res as typeof context.res & {redirect: (status: number, to: string) => any};
 

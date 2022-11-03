@@ -6,7 +6,7 @@ const toTimeString = (time: number) => {
     );
 };
 
-const Order = ({ order }: {order: {time: number, items: {name: string, price: string}[]}}) => {
+const Order = ({ order }: {order: {time: number, items: {name: string, price: number}[]}}) => {
     return (
         <div className='flex items-center w-full border-t border-b'>
             <span>At: {toTimeString(order.time)}</span>
