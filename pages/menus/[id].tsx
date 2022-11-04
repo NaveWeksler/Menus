@@ -6,8 +6,11 @@ import Cart from 'components/Cart';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { useState, useEffect } from 'react';
 import MenuModal from 'components/MenuModal';
+import {GetStaticProps, GetStaticPaths, GetStaticPropsContext, GetStaticPathsContext, InferGetStaticPropsType} from "next";
 
-export const getStaticPaths = async () => {
+
+
+export const getStaticPaths: GetStaticPaths = async (context: GetStaticPathsContext) => {
     const ids = await getMenusIds();
 
     // changing the format to match the requirements of next
@@ -23,18 +26,17 @@ export const getStaticPaths = async () => {
     };
 };
 
-export const getStaticProps = async (context) => {
-    const id = context.params.id;
+export const getStaticProps: GetStaticProps<Awaited<ReturnType<typeof getMenuData>>> = async (context) => {
+    const id = context.params?.id as string;
     const data = await getMenuData(id);
-
     return {
         props: data,
     };
 };
 
-const Menu = ({ title, items }) => {
+const Menu = ({ title, items }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const [price, setPrice] = useState(0);
-    const [modal, setModal] = useState({
+    const [modal, setModal] = useState<{open: boolean, children: JSX.Element | null}>({
         open: false,
         children: null,
     });
@@ -58,8 +60,8 @@ const Menu = ({ title, items }) => {
     }, [modal]);
 
     useEffect(() => setPrice(getPrice()), []);
-
-    const openItem = (index) => {
+    
+    const openItem = (index: number) => {
         setModal({
             open: true,
             children: <ItemDescription {...items[index]} close={closeModal} />,
@@ -69,7 +71,7 @@ const Menu = ({ title, items }) => {
     const openCart = () => {
         setModal({
             open: true,
-            children: <Cart price={price} />,
+            children: <Cart/>,
         });
     };
 
@@ -89,7 +91,7 @@ const Menu = ({ title, items }) => {
 
     return (
         <div className='flex flex-col w-screen h-screen overflow-hidden'>
-            <MenuBar title={title} icon={AiOutlineShoppingCart} url='/cart' />
+            <MenuBar title={title} />
 
             <div className='flex flex-col w-full flex-1 divide-y overflow-auto'>
                 {items.map((item, index) => (
@@ -112,7 +114,7 @@ const Menu = ({ title, items }) => {
             )}
 
             <MenuModal isOpen={modal.open} close={closeModal}>
-                {modal.children}
+                {modal.children ? modal.children : <></>}
             </MenuModal>
         </div>
     );

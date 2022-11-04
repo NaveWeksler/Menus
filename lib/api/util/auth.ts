@@ -21,7 +21,7 @@ import { NextApiResponse, GetServerSideProps, NextApiRequest, GetServerSideProps
  * -1 edit all menus
  */
 
-const ROUTESID: {[key: string]: number} = { // only routes
+const ROUTESID: Readonly<{[key: string]: number}> = { // only routes
     "/api/menu/editMenu": 1,
     "/orders": 2,
     "/api/createMenu": 3,

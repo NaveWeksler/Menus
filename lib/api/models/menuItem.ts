@@ -1,13 +1,13 @@
 
 import mongoose from 'mongoose';
 
-interface IMenuItem {
+export interface IMenuItem {
     menu: mongoose.Schema.Types.ObjectId,
     name: string,
-    price: string,
+    price: number,
     image: string,
     additions?: {[key: string]: [string]},
-    description?: string 
+    description: string 
 }
 
 const menuItemSchema = new mongoose.Schema<IMenuItem>({
@@ -17,7 +17,7 @@ const menuItemSchema = new mongoose.Schema<IMenuItem>({
         required: true,
     },
     price: {
-        type: String,
+        type: Number,
         required: true,
     },
     image: String,
@@ -25,7 +25,7 @@ const menuItemSchema = new mongoose.Schema<IMenuItem>({
         type: Map,
         of: [String],
     },
-    description: String,
+    description: {type: String, default: ""},
 });
 
 export default mongoose.models.MenuItem as mongoose.Model<IMenuItem> ||

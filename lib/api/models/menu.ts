@@ -18,7 +18,7 @@ const menuSchema = new mongoose.Schema<IMenu>({
         required: true,
     },
     items: {
-        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'MenuItem' }],
+        type: [{ type: mongoose.Types.ObjectId, ref: 'MenuItem' }],
         required: false,
         default: [],
     },

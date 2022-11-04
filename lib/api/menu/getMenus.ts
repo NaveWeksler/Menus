@@ -1,3 +1,4 @@
+import type {IMenuItem} from 'lib/api/models/menuItem';
 import Menu from 'lib/api/models/menu';
 import connect from 'lib/api/mongoHandler';
 
@@ -21,12 +22,13 @@ export const getMenuData = async (id: string) => {
 
     const menu = await Menu.findById(id)
         .select('-_id -__v -owner') // unnecessary fields
-        .populate({
+        .populate<{items: Omit<IMenuItem & {_id: string}, "__v" | "owner">[]}>({
             path: 'items',
-            select: '-_id -__v -menu',
+            select: '-__v -menu',
             options: { lean: true },
         }) // populating the array of items
         .lean(); // required for serializing in 'getStaticProps'
-
+    if (!menu) throw Error("menu:" + id + "is null");
+    menu.items.forEach(item => item._id = item._id.toString()); // maybe mongoose can do it
     return menu;
 };
