@@ -1,9 +1,16 @@
 import Image from 'next/image';
 
-const MenuItem = ({ name, description, price, image }: {name: string, description: string, price: number, image: string}) => (
-    <div className='px-2 py-5 hover:bg-gray-50 dark:hover:bg-slate-900 transition'>
-        <div className='flex justify-between w-full h-20'>
-            <div className='relative w-32 h-full rounded-lg overflow-hidden'>
+type Props = {
+    name: string;
+    description: string;
+    price: number;
+    image: string;
+};
+
+const MenuItem = ({ name, description, price, image }: Props) => (
+    <div className='px-3 py-5 hover:bg-gray-50 dark:hover:bg-slate-900 transition'>
+        <div className='flex justify-between w-full h-[4.5rem]'>
+            <div className='relative w-[7.5rem] h-full rounded-lg overflow-hidden'>
                 <Image src={image} alt={name} layout='fill' objectFit='cover' />
             </div>
 

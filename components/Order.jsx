@@ -1,12 +1,12 @@
-const toTimeString = (time: number) => {
-    const hours = Math.floor(time / 60);
+const toTimeString = (time) => {
+    const hours = parseInt(time / 60);
     time -= hours * 60;
     return (
         (hours > 9 ? hours : '0' + hours) + ':' + (time > 9 ? time : '0' + time)
     );
 };
 
-const Order = ({ order }: {order: {time: number, items: {name: string, price: number}[]}}) => {
+const Order = ({ order }) => {
     return (
         <div className='flex items-center w-full border-t border-b'>
             <span>At: {toTimeString(order.time)}</span>

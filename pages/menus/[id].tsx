@@ -1,16 +1,29 @@
 import { getMenusIds, getMenuData } from 'lib/api/menu/getMenus';
+import Header from 'components/Header';
 import MenuItem from 'components/MenuItem';
-import MenuBar from 'components/MenuBar';
-import ItemDescription from 'components/ItemDescription';
 import Cart from 'components/Cart';
-import { AiOutlineShoppingCart } from 'react-icons/ai';
-import { useState, useEffect } from 'react';
+import ItemDescription from 'components/ItemDescription';
 import MenuModal from 'components/MenuModal';
-import {GetStaticProps, GetStaticPaths, GetStaticPropsContext, GetStaticPathsContext, InferGetStaticPropsType} from "next";
+import { useState, useEffect, ReactElement } from 'react';
+import { GetStaticPaths, GetStaticProps } from 'next';
 
+type Props = {
+    title: string;
+    items: {
+        name: string;
+        price: number;
+        description: string;
+        image: string;
+        _id: string;
+    }[];
+};
 
+interface IModal {
+    open: boolean;
+    children: ReactElement | null;
+}
 
-export const getStaticPaths: GetStaticPaths = async (context: GetStaticPathsContext) => {
+export const getStaticPaths: GetStaticPaths = async () => {
     const ids = await getMenusIds();
 
     // changing the format to match the requirements of next
@@ -26,17 +39,30 @@ export const getStaticPaths: GetStaticPaths = async (context: GetStaticPathsCont
     };
 };
 
-export const getStaticProps: GetStaticProps<Awaited<ReturnType<typeof getMenuData>>> = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
     const id = context.params?.id as string;
     const data = await getMenuData(id);
+
+    data.items = [
+        data.items![0],
+        data.items![0],
+        data.items![0],
+        data.items![0],
+        data.items![0],
+        data.items![0],
+        data.items![0],
+        data.items![0],
+        data.items![0],
+    ];
+
     return {
         props: data,
     };
 };
 
-const Menu = ({ title, items }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Menu = ({ title, items }: Props) => {
     const [price, setPrice] = useState(0);
-    const [modal, setModal] = useState<{open: boolean, children: JSX.Element | null}>({
+    const [modal, setModal] = useState<IModal>({
         open: false,
         children: null,
     });
@@ -60,7 +86,7 @@ const Menu = ({ title, items }: InferGetStaticPropsType<typeof getStaticProps>) 
     }, [modal]);
 
     useEffect(() => setPrice(getPrice()), []);
-    
+
     const openItem = (index: number) => {
         setModal({
             open: true,
@@ -71,7 +97,7 @@ const Menu = ({ title, items }: InferGetStaticPropsType<typeof getStaticProps>) 
     const openCart = () => {
         setModal({
             open: true,
-            children: <Cart/>,
+            children: <Cart />,
         });
     };
 
@@ -80,41 +106,37 @@ const Menu = ({ title, items }: InferGetStaticPropsType<typeof getStaticProps>) 
     };
 
     const getPrice = () => {
-        const orderString = localStorage.getItem('order');
-
-        if (orderString) {
-            return JSON.parse(orderString).price;
-        }
-
-        return 0;
+        return JSON.parse(localStorage.getItem('order') ?? '{"price":0}').price;
     };
 
     return (
-        <div className='flex flex-col w-screen h-screen overflow-hidden'>
-            <MenuBar title={title} />
+        <div className='flex flex-col h-full'>
+            <Header title={title} />
 
-            <div className='flex flex-col w-full flex-1 divide-y overflow-auto'>
-                {items.map((item, index) => (
-                    <div key={index} onClick={() => openItem(index)}>
-                        <MenuItem {...item} />
+            <div className='h-full flex-1'>
+                <div className='divide-y'>
+                    {items.map((item, index) => (
+                        <div key={index} onClick={() => openItem(index)}>
+                            <MenuItem {...item} />
+                        </div>
+                    ))}
+                </div>
+
+                {price > 0 && (
+                    <div className='fixed bottom-0 p-2 w-full'>
+                        <button
+                            onClick={openCart}
+                            className='flex justify-between w-full py-3 px-4 bg-light-4 text-white rounded-md'
+                        >
+                            <p>{price} ₪</p>
+                            <p className='font-semibold'>צפה בהזמנה</p>
+                        </button>
                     </div>
-                ))}
+                )}
             </div>
 
-            {price > 0 && (
-                <div className='fixed inset-x-3 bottom-3 rounded-md overflow-hidden'>
-                    <button
-                        onClick={openCart}
-                        className='flex justify-between py-3 px-4 w-full bg-light-4 text-white'
-                    >
-                        <p>{price} ₪</p>
-                        <p className='font-semibold'>צפה בהזמנה</p>
-                    </button>
-                </div>
-            )}
-
             <MenuModal isOpen={modal.open} close={closeModal}>
-                {modal.children ? modal.children : <></>}
+                {modal.children!}
             </MenuModal>
         </div>
     );

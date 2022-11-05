@@ -1,12 +1,10 @@
 import Order from 'components/Order';
 import Link from 'next/link';
 import { withSSRAuth } from 'lib/api/util/auth';
-import {GetServerSideProps, InferGetServerSidePropsType} from "next";
 
 const debug = require('debug')('menus:orders');
 
-
-const Orders = ({ orders }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Orders = ({ orders }) => {
     return (
         <div className='flex-1 p-2 h-full'>
             <span className='flex items-center justify-between mt-2 mx-6'>
@@ -28,7 +26,7 @@ const Orders = ({ orders }: InferGetServerSidePropsType<typeof getServerSideProp
     );
 };
 
-export const getServerSideProps = withSSRAuth<{orders: {time: number, items: {name: string, price: number}[]}[]}>(async ({ req, res }) => {
+export const getServerSideProps = withSSRAuth(({ req, res }) => {
     return {
         props: {
             orders: [
@@ -62,7 +60,5 @@ export const getServerSideProps = withSSRAuth<{orders: {time: number, items: {na
         },
     };
 });
-
-
 
 export default Orders;

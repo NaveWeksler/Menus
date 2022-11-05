@@ -1,7 +1,13 @@
-import { cloneElement } from 'react';
+import { cloneElement, ReactElement } from 'react';
 import { IoMdClose } from 'react-icons/io';
 
-const MenuModal = ({ children, isOpen, close }: {children: JSX.Element, isOpen: boolean, close: () => void}) => (
+type Props = {
+    children: ReactElement;
+    isOpen: boolean;
+    close: () => void;
+};
+
+const MenuModal = ({ children, isOpen, close }: Props) => (
     <div
         aria-hidden={!isOpen}
         className={`fixed inset-0 z-50 flex justify-center items-center ${

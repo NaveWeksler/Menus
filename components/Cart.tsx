@@ -1,8 +1,19 @@
 import { useState, useEffect } from 'react';
 import CartItem from './CartItem';
 
+type IOrder = {
+    items: {
+        name: string;
+        description?: string;
+        price: number;
+        image: string;
+        quantity: number;
+    }[];
+    price: number;
+};
+
 const Cart = () => {
-    const [order, setOrder] = useState<{price: number, items: {description: string, image: string, name: string, quantity: number, price: number}[]}>({
+    const [order, setOrder] = useState<IOrder>({
         items: [],
         price: 0,
     });

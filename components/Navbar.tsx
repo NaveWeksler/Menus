@@ -2,14 +2,20 @@ import { AiOutlineHome, AiOutlinePlus } from 'react-icons/ai';
 import { BiUserCircle } from 'react-icons/bi';
 import { MdSettings } from 'react-icons/md';
 import { GrNotes } from 'react-icons/gr';
+import Link from 'next/link';
 
-const Navbar = ({ isOpen, close }: {isOpen: boolean, close: () => void}) => {
+type Props = {
+    isOpen: boolean;
+    close: () => void;
+};
+
+const Navbar = ({ isOpen, close }: Props) => {
     const data = [
-        { name: 'כניסה', Icon: BiUserCircle },
-        { name: 'הזמנות קודמות', Icon: GrNotes },
-        { name: 'יצירת תפריט', Icon: AiOutlinePlus },
-        { name: 'בית', Icon: AiOutlineHome },
-        { name: 'הגדרות', Icon: MdSettings },
+        { name: 'כניסה', Icon: BiUserCircle, url: '/auth/login' },
+        { name: 'הזמנות קודמות', Icon: GrNotes, url: '/orders' },
+        { name: 'יצירת תפריט', Icon: AiOutlinePlus, url: '/create-menu' },
+        { name: 'בית', Icon: AiOutlineHome, url: '/' },
+        { name: 'הגדרות', Icon: MdSettings, url: '/settings' },
     ];
 
     return (
@@ -32,14 +38,13 @@ const Navbar = ({ isOpen, close }: {isOpen: boolean, close: () => void}) => {
                 } transition-all ease-in-out`}
             >
                 <div className='w-56 divide-y'>
-                    {data.map(({ name, Icon }, index) => (
-                        <div
-                            key={index}
-                            className='flex justify-between items-center p-2 hover:bg-gray-600 hover:bg-opacity-20 transition'
-                        >
-                            <Icon size={24} />
-                            <p className='text-lg'>{name}</p>
-                        </div>
+                    {data.map(({ name, Icon, url }, index) => (
+                        <Link key={index} href={url}>
+                            <div className='flex justify-between items-center p-2 hover:bg-gray-600 hover:bg-opacity-20'>
+                                <Icon size={24} />
+                                <p className='text-lg'>{name}</p>
+                            </div>
+                        </Link>
                     ))}
                 </div>
             </div>

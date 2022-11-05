@@ -2,6 +2,15 @@ import { GrAdd } from 'react-icons/gr';
 import { BiMinus } from 'react-icons/bi';
 import Image from 'next/image';
 
+type Props = {
+    name: string;
+    description?: string;
+    price: number;
+    image: string;
+    quantity: number;
+    setQuantity: (newQuantity: number) => void;
+};
+
 const CartItem = ({
     name,
     description,
@@ -9,22 +18,22 @@ const CartItem = ({
     image,
     quantity,
     setQuantity,
-}: {name: string, price: number, image: string, quantity: number, description: string, setQuantity: (newQuantity: number) => void}) => {
+}: Props) => {
     return (
-        <div className='flex justify-between h-24 py-2 shadow-theme overflow-hidden'>
-            <div className='w-32 h-full relative rounded-lg overflow-hidden'>
+        <div className='flex justify-between py-2.5 overflow-hidden items-center'>
+            <div className='w-32 h-20 relative rounded-lg overflow-hidden'>
                 <Image src={image} alt={name} layout='fill' objectFit='cover' />
             </div>
 
-            <div className='flex flex-col flex-1 pl-2 overflow-hidden'>
-                <div className='flex flex-col flex-1 justify-between text-right px-2 py-0.5'>
-                    <p className='text-light-3 font-medium'>{name}</p>
+            <div className='flex flex-col flex-1 pl-3 overflow-hidden'>
+                <div className='flex flex-col flex-1 justify-between text-right px-2 pb-0.5'>
+                    <p className='font-semibold truncate'>{name}</p>
                     <p className='pb-0.5 text-sm font-light text-gray-600 truncate'>
                         {description}
                     </p>
                 </div>
 
-                <div className='flex justify-between items-center py-0.5 border-t'>
+                <div className='flex justify-between items-center pt-0.5 border-t'>
                     <p className='text-light-3 font-medium'>
                         {quantity * price} ₪
                     </p>
