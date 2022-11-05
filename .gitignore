@@ -1,6 +1,7 @@
 **/node_modules
 .next
 .vscode
+testBuild
 
 # misc
 .DS_Store
@@ -8,4 +9,6 @@
 .env.local
 .env.development
 .env.production
+.env.test
 **.rest
+tsconfig.tsbuildinfo
