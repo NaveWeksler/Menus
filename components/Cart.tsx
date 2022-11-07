@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import CartItem from './CartItem';
 
+
+
 const Cart = () => {
     const [order, setOrder] = useState<{price: number, items: {description: string, image: string, name: string, quantity: number, price: number}[]}>({
         items: [],
@@ -9,7 +11,7 @@ const Cart = () => {
 
     useEffect(() => {
         const orderString = localStorage.getItem('order');
-
+        console.log("Str:", orderString);
         if (orderString) {
             setOrder(JSON.parse(orderString));
         }

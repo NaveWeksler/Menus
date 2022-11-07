@@ -1,14 +1,18 @@
+import dynamic from "next/dynamic";
+// import { Suspense } from "react";
+import { useState, useEffect, Suspense } from 'react';
+import {GetStaticProps, GetStaticPaths, GetStaticPathsContext, InferGetStaticPropsType} from "next";
+
 import { getMenusIds, getMenuData } from 'lib/api/menu/getMenus';
+
+//const MenuItem = dynamic(() => import("components/MenuItem"), {suspense: true});
 import MenuItem from 'components/MenuItem';
 import MenuBar from 'components/MenuBar';
-import ItemDescription from 'components/ItemDescription';
-import Cart from 'components/Cart';
-import { AiOutlineShoppingCart } from 'react-icons/ai';
-import { useState, useEffect } from 'react';
+const ItemDescription = dynamic(() => import("components/ItemDescription"), {suspense: true});
+const Cart = dynamic(() => import("components/Cart"), {suspense: true});
+//import ItemDescription from 'components/ItemDescription';
+//import Cart from 'components/Cart';
 import MenuModal from 'components/MenuModal';
-import {GetStaticProps, GetStaticPaths, GetStaticPropsContext, GetStaticPathsContext, InferGetStaticPropsType} from "next";
-
-
 
 export const getStaticPaths: GetStaticPaths = async (context: GetStaticPathsContext) => {
     const ids = await getMenusIds();
@@ -34,8 +38,61 @@ export const getStaticProps: GetStaticProps<Awaited<ReturnType<typeof getMenuDat
     };
 };
 
+
 const Menu = ({ title, items }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const [price, setPrice] = useState(0);
+    const [showCart, setShowCart] = useState(false);
+    const [showItem, setShowItem] = useState(false);
+    const [itemIndex, setItemIndex] = useState(0);
+
+    const addItemPrice = (add: number) => { // add item to order
+        setPrice(price + add);
+    }
+
+    return (
+        <div className='flex flex-col w-screen h-screen overflow-hidden'>
+            <MenuBar title={title} />
+             <div className='flex flex-col w-full flex-1 divide-y overflow-auto'>
+                {items.map((item, index) => (
+                    <div key={index} onClick={() => {setItemIndex(index); setShowItem(true)}}>
+                        <MenuItem {...item} />
+                    </div>
+                ))}
+            </div>
+
+            {price > 0 && (
+                <div className='fixed inset-x-3 bottom-3 rounded-md overflow-hidden'>
+                    <button
+                        onClick={() => setShowCart(true)}
+                        className='flex justify-between py-3 px-4 w-full bg-light-4 text-white'
+                    >
+                        <p>{price} ₪</p>
+                        <p className='font-semibold'>צפה בהזמנה</p>
+                    </button>
+                </div>
+            )}
+
+            <Suspense fallback={"loading..."}>
+                <MenuModal isOpen={showCart} close={() => setShowCart(false)}>
+                    <Cart/>
+                </MenuModal>
+            </Suspense>
+            <Suspense fallback={"loading..."}>
+                <MenuModal isOpen={showItem} close={() => setShowItem(false)}>
+                    <ItemDescription {...items[itemIndex]} close={() => setShowItem(false)} addItemPrice={addItemPrice}/>
+                </MenuModal>
+            </Suspense>
+        </div>
+    );
+};
+
+
+
+export default Menu;
+
+
+
+/*const [price, setPrice] = useState(0);
     const [modal, setModal] = useState<{open: boolean, children: JSX.Element | null}>({
         open: false,
         children: null,
@@ -118,6 +175,4 @@ const Menu = ({ title, items }: InferGetStaticPropsType<typeof getStaticProps>) 
             </MenuModal>
         </div>
     );
-};
-
-export default Menu;
+*/

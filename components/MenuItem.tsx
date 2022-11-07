@@ -4,7 +4,7 @@ const MenuItem = ({ name, description, price, image }: {name: string, descriptio
     <div className='px-2 py-5 hover:bg-gray-50 dark:hover:bg-slate-900 transition'>
         <div className='flex justify-between w-full h-20'>
             <div className='relative w-32 h-full rounded-lg overflow-hidden'>
-                <Image src={image} alt={name} layout='fill' objectFit='cover' />
+                <Image src={image} alt={name} layout='fill' objectFit='cover' priority={true}/>
             </div>
 
             <div className='flex flex-col flex-1 text-right pl-1 overflow-hidden'>

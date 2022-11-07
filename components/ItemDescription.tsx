@@ -2,14 +2,22 @@ import { GrAdd } from 'react-icons/gr';
 import { BiMinus } from 'react-icons/bi';
 import Image from 'next/image';
 import { useState } from 'react';
+import { StringSchemaDefinition } from 'mongoose';
 
-const ItemDescription = ({ name, description, price, image, _id, close }: {close: () => void, name: string, description: string, price: number, image: string, _id: string}) => {
-    const [quantity, setQuantity] = useState(1);
+interface props {
+    close: () => void,
+    name: string,
+    description: string, price: number, image: string,
+    _id: string,
+    addItemPrice: (price: number) => void
+}
 
-    const addItem = () => {
+
+
+ const addItem = (_id: string, quantity: number, price: number, image: string, description: string, name: string) => {
         const order = localStorage.getItem('order');
 
-        const newOrder = order
+        const newOrder: {items: {_id: string, quantity: number, name: string, description: string, image: string, price: number}[], price: number} = order
             ? JSON.parse(order)
             : {
                   items: [],
@@ -17,6 +25,7 @@ const ItemDescription = ({ name, description, price, image, _id, close }: {close
               };
 
         newOrder.price += price * quantity;
+        
         newOrder.items.push({
             name,
             description,
@@ -27,8 +36,13 @@ const ItemDescription = ({ name, description, price, image, _id, close }: {close
         });
 
         localStorage.setItem('order', JSON.stringify(newOrder));
-        close();
+        return newOrder.price;
     };
+
+const ItemDescription = ({ name, description, price, image, _id, close, addItemPrice }: props) => {
+    const [quantity, setQuantity] = useState(1);
+
+    
 
     return (
         <div className='w-full'>
@@ -67,7 +81,7 @@ const ItemDescription = ({ name, description, price, image, _id, close }: {close
                 </div>
 
                 <button
-                    onClick={addItem}
+                    onClick={() => {addItemPrice(addItem(_id, quantity, price, image, description, name)); close()}}
                     className='flex justify-between p-3 w-ful bg-light-4 flex-1 rounded-md shadow-lg text-white transition text-sm'
                 >
                     <p>{quantity * price} ₪</p>
