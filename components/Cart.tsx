@@ -3,7 +3,7 @@ import CartItem from './CartItem';
 
 
 
-const Cart = () => {
+const Cart = ({isOpen}: {isOpen: boolean}) => {
     const [order, setOrder] = useState<{price: number, items: {description: string, image: string, name: string, quantity: number, price: number}[]}>({
         items: [],
         price: 0,
@@ -15,7 +15,7 @@ const Cart = () => {
         if (orderString) {
             setOrder(JSON.parse(orderString));
         }
-    }, []);
+    }, [isOpen]);
 
     const setQuantity = (index: number) => (newQuantity: number) => {
         const newOrder = { ...order };

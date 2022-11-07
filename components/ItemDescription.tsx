@@ -2,7 +2,6 @@ import { GrAdd } from 'react-icons/gr';
 import { BiMinus } from 'react-icons/bi';
 import Image from 'next/image';
 import { useState } from 'react';
-import { StringSchemaDefinition } from 'mongoose';
 
 interface props {
     close: () => void,
@@ -24,16 +23,24 @@ interface props {
                   price: 0,
               };
 
-        newOrder.price += price * quantity;
-        
-        newOrder.items.push({
-            name,
-            description,
-            price,
-            image,
-            quantity,
-            _id,
+        newOrder.price = price*quantity
+
+        let exsiting = -1;
+        newOrder.items.forEach((elem, index) => {
+            if (elem._id === _id) exsiting = index;
         });
+        if (exsiting !== -1) {
+            newOrder.items[exsiting].quantity = quantity;
+        } else {
+            newOrder.items.push({
+                name,
+                description,
+                price,
+                image,
+                quantity,
+                _id,
+            });
+        }
 
         localStorage.setItem('order', JSON.stringify(newOrder));
         return newOrder.price;
@@ -47,7 +54,7 @@ const ItemDescription = ({ name, description, price, image, _id, close, addItemP
     return (
         <div className='w-full'>
             <div className='relative w-full h-64 overflow-hidden'>
-                <Image src={image} alt={name} layout='fill' objectFit='cover' />
+                <Image src={image} alt={name} layout='fill' objectFit='cover'/>
             </div>
 
             <div className='text-right px-3 py-4'>

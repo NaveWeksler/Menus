@@ -21,8 +21,7 @@ const MenuModal = ({ children, isOpen, close }: {children: JSX.Element, isOpen: 
             } transition-all ease-in-out`}
         >
             {
-                /* sends 'close' function to the children */
-                children && cloneElement(children, { close })
+                children
             }
 
             <button

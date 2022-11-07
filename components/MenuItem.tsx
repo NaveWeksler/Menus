@@ -3,7 +3,7 @@ import Image from 'next/image';
 const MenuItem = ({ name, description, price, image }: {name: string, description: string, price: number, image: string}) => (
     <div className='px-2 py-5 hover:bg-gray-50 dark:hover:bg-slate-900 transition'>
         <div className='flex justify-between w-full h-20'>
-            <div className='relative w-32 h-full rounded-lg overflow-hidden'>
+            <div className='w-32 h-full rounded-lg overflow-hidden relative'>
                 <Image src={image} alt={name} layout='fill' objectFit='cover' priority={true}/>
             </div>
 

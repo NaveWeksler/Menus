@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-// import { Suspense } from "react";
 import { useState, useEffect, Suspense } from 'react';
 import {GetStaticProps, GetStaticPaths, GetStaticPathsContext, InferGetStaticPropsType} from "next";
 
@@ -8,8 +7,9 @@ import { getMenusIds, getMenuData } from 'lib/api/menu/getMenus';
 //const MenuItem = dynamic(() => import("components/MenuItem"), {suspense: true});
 import MenuItem from 'components/MenuItem';
 import MenuBar from 'components/MenuBar';
-const ItemDescription = dynamic(() => import("components/ItemDescription"), {suspense: true});
+
 const Cart = dynamic(() => import("components/Cart"), {suspense: true});
+const ItemDescription = dynamic(() => import("components/ItemDescription"), {suspense: true});
 //import ItemDescription from 'components/ItemDescription';
 //import Cart from 'components/Cart';
 import MenuModal from 'components/MenuModal';
@@ -45,8 +45,18 @@ const Menu = ({ title, items }: InferGetStaticPropsType<typeof getStaticProps>) 
     const [showItem, setShowItem] = useState(false);
     const [itemIndex, setItemIndex] = useState(0);
 
-    const addItemPrice = (add: number) => { // add item to order
-        setPrice(price + add);
+    useEffect(() => {
+        const orderString = localStorage.getItem('order');
+        console.log("from storage");
+        if (orderString) {
+            const order = JSON.parse(orderString)
+            setPrice(order.price);
+        }
+    }, [])
+
+    const addItemPrice = (price: number) => { // add item to order
+        console.log("price: ", price);
+        setPrice(price);
     }
 
     return (
@@ -74,14 +84,15 @@ const Menu = ({ title, items }: InferGetStaticPropsType<typeof getStaticProps>) 
 
             <Suspense fallback={"loading..."}>
                 <MenuModal isOpen={showCart} close={() => setShowCart(false)}>
-                    <Cart/>
+                    <Cart isOpen={showCart}/>
                 </MenuModal>
             </Suspense>
-            <Suspense fallback={"loading..."}>
+
+            
                 <MenuModal isOpen={showItem} close={() => setShowItem(false)}>
                     <ItemDescription {...items[itemIndex]} close={() => setShowItem(false)} addItemPrice={addItemPrice}/>
                 </MenuModal>
-            </Suspense>
+           
         </div>
     );
 };
