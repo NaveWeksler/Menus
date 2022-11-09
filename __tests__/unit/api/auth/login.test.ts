@@ -1,6 +1,6 @@
 import {describe, expect, it} from '@jest/globals';
 import User from '@lib/api/models/user';
-import { mockRequest, mockResponse } from '__tests__/mock'; // cant use import
+import { mockRequest, mockResponse } from '__tests__/unit/mock'; // cant use import
 import login from 'pages/api/auth/login/accountLogin';
 import { storePsw } from '@lib/api/auth/pswStorage';
 import {randomBytes} from "crypto";

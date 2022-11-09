@@ -12,3 +12,6 @@ testBuild
 .env.test
 **.rest
 tsconfig.tsbuildinfo
+/test-results/
+/playwright-report/
+/playwright/.cache/
