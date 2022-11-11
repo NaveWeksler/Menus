@@ -14,6 +14,9 @@ module.exports = {
                     4: '#8b5cf6',
                 },
             },
+            boxShadow: {
+                header: '0 0 10px rgba(0,0,0,0.4)',
+            },
         },
     },
     plugins: [],

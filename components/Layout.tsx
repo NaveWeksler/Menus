@@ -1,14 +1,18 @@
 import Head from 'next/head';
+import { ReactNode } from 'react';
 
-const Layout = ({ children }: {children: JSX.Element[]}) => (
+type Props = {
+    children: ReactNode;
+};
+
+const Layout = ({ children }: Props) => (
     <>
         <Head>
             <title>Menus</title>
             <meta name='description' content='Organize Small Sales' />
         </Head>
-        <div className='h-screen'>
-            <main className='w-full h-full'>{children}</main>
-        </div>
+
+        <main className='w-screen h-screen'>{children}</main>
     </>
 );
 

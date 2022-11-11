@@ -3,58 +3,74 @@ import { BiMinus } from 'react-icons/bi';
 import Image from 'next/image';
 import { useState } from 'react';
 
-interface props {
-    close: () => void,
-    name: string,
-    description: string, price: number, image: string,
-    _id: string,
-    addItemPrice: (price: number) => void
-}
+type Props = {
+    close: () => void;
+    name: string;
+    description: string;
+    price: number;
+    image: string;
+    _id: string;
+    addItemPrice: (price: number) => void;
+};
 
+type Item = {
+    _id: string;
+    quantity: number;
+    price: number;
+    image: string;
+    description: string;
+    name: string;
+};
 
+const addItem = ({ _id, quantity, price, image, description, name }: Item) => {
+    const order = localStorage.getItem('order');
 
- const addItem = (_id: string, quantity: number, price: number, image: string, description: string, name: string) => {
-        const order = localStorage.getItem('order');
+    const newOrder: { items: Item[]; price: number } = order
+        ? JSON.parse(order)
+        : {
+              items: [],
+              price: 0,
+          };
 
-        const newOrder: {items: {_id: string, quantity: number, name: string, description: string, image: string, price: number}[], price: number} = order
-            ? JSON.parse(order)
-            : {
-                  items: [],
-                  price: 0,
-              };
+    console.log(newOrder);
+    newOrder.price += price * quantity;
 
-        newOrder.price = price*quantity
-
-        let exsiting = -1;
-        newOrder.items.forEach((elem, index) => {
-            if (elem._id === _id) exsiting = index;
+    let existing = -1;
+    newOrder.items.forEach((elem, index) => {
+        if (elem._id === _id) existing = index;
+    });
+    if (existing !== -1) {
+        newOrder.items[existing].quantity += quantity;
+    } else {
+        newOrder.items.push({
+            name,
+            description,
+            price,
+            image,
+            quantity,
+            _id,
         });
-        if (exsiting !== -1) {
-            newOrder.items[exsiting].quantity = quantity;
-        } else {
-            newOrder.items.push({
-                name,
-                description,
-                price,
-                image,
-                quantity,
-                _id,
-            });
-        }
+    }
+    console.log(newOrder);
+    localStorage.setItem('order', JSON.stringify(newOrder));
+    return newOrder.price;
+};
 
-        localStorage.setItem('order', JSON.stringify(newOrder));
-        return newOrder.price;
-    };
-
-const ItemDescription = ({ name, description, price, image, _id, close, addItemPrice }: props) => {
+const ItemDescription = ({
+    name,
+    description,
+    price,
+    image,
+    _id,
+    close,
+    addItemPrice,
+}: Props) => {
     const [quantity, setQuantity] = useState(1);
-
-    
 
     return (
         <div className='w-full'>
             <div className='relative w-full h-64 overflow-hidden'>
-                <Image src={image} alt={name} layout='fill' objectFit='cover'/>
+                <Image src={image} alt={name} layout='fill' objectFit='cover' />
             </div>
 
             <div className='text-right px-3 py-4'>
@@ -88,7 +104,19 @@ const ItemDescription = ({ name, description, price, image, _id, close, addItemP
                 </div>
 
                 <button
-                    onClick={() => {addItemPrice(addItem(_id, quantity, price, image, description, name)); close()}}
+                    onClick={() => {
+                        addItemPrice(
+                            addItem({
+                                _id,
+                                quantity,
+                                price,
+                                image,
+                                description,
+                                name,
+                            })
+                        );
+                        close();
+                    }}
                     className='flex justify-between p-3 w-ful bg-light-4 flex-1 rounded-md shadow-lg text-white transition text-sm'
                 >
                     <p>{quantity * price} ₪</p>
