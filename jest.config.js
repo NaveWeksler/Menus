@@ -5,7 +5,7 @@ const { compilerOptions } = require('./tsconfig');
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
-    setupFiles: ['<rootDir>/__tests__/setup.js'],
+    setupFiles: ['<rootDir>/__tests__/unit/setup.js'],
     testEnvironment: 'node',
     verbose: false,
     silent: false,
@@ -15,5 +15,5 @@ module.exports = {
     }),
     testRegex: '(\\.|/)(test|spec)\\.[jt]sx?$',
     extensionsToTreatAsEsm: ['.ts'],
-    setupFilesAfterEnv: ['<rootDir>/__tests__/setupJest.ts'],
+    setupFilesAfterEnv: ['<rootDir>/__tests__/unit/setupJest.ts'],
 };
