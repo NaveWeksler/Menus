@@ -104,6 +104,7 @@ const Menu = ({
                     {...items[itemIndex]}
                     close={() => setShowItem(false)}
                     addItemPrice={(price: number) => setPrice(price)}
+                    show={showItem}
                 />
             </MenuModal>
         </div>

@@ -1,7 +1,7 @@
 import { GrAdd } from 'react-icons/gr';
 import { BiMinus } from 'react-icons/bi';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = {
     close: () => void;
@@ -11,6 +11,7 @@ type Props = {
     image: string;
     _id: string;
     addItemPrice: (price: number) => void;
+     show: boolean;
 };
 
 type Item = {
@@ -64,8 +65,12 @@ const ItemDescription = ({
     _id,
     close,
     addItemPrice,
+    show
 }: Props) => {
     const [quantity, setQuantity] = useState(1);
+    useEffect(() => {
+        setQuantity(1);
+    }, [show])
 
     return (
         <div className='w-full'>
