@@ -12,7 +12,9 @@ declare global {
             NEXT_PUBLIC_MIN_USERNAME: string,
             NEXT_PUBLIC_MAX_USERNAME: string,
             NEXT_PUBLIC_MIN_PASSWORD: string,
-            NEXT_PUBLIC_MAX_PASSWORD: string
+            NEXT_PUBLIC_MAX_PASSWORD: string,
+            NEXT_PUBLIC_GOOGLE_LOGIN_API: string,
+            NEXT_PUBLIC_GOOGLE_CLIENT_ID: string
         }
     }
 }

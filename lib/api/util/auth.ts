@@ -2,6 +2,7 @@ import { withDB } from './middleware';
 import User from 'lib/api/models/user';
 const debug = require('debug')('menus:auth');
 import {AuthRequest} from "lib/api/types/types"
+import {UserModel} from "lib/api/types/user";
 import { NextApiResponse, GetServerSideProps, NextApiRequest, GetServerSidePropsContext } from 'next';
 
 /**
@@ -87,12 +88,22 @@ const withAuth = (next: (req: AuthRequest, res: NextApiResponse) => any) =>
         return next(authReq, res);
     });
 
+
+interface GetServerSidePropsContextWithSession extends GetServerSidePropsContext {
+    user: UserModel;
+}
+
+type GetServerSidePropsWithAuth<P extends { [key: string]: any } = { [key: string]: any }> = (
+    context: GetServerSidePropsContextWithSession
+) => Promise<P>;
+
+
 /**
  *
  * @param {Int} routeID the number associated with the route. (used for authorization)
  * @param {*} next the original 'getServerSideProps' function
  */
-export const withSSRAuth = <GetServerSidePropsType extends { [key: string]: any; }>(next: GetServerSideProps ): GetServerSideProps<GetServerSidePropsType> => async (context: GetServerSidePropsContext) => {
+export const withSSRAuth = <GetServerSidePropsType extends { [key: string]: any; }>(next: GetServerSidePropsWithAuth ): GetServerSideProps<GetServerSidePropsType> => async (context: GetServerSidePropsContext) => {
     const req = context.req;
     const res = context.res as typeof context.res & {redirect: (status: number, to: string) => any};
 
@@ -104,8 +115,9 @@ export const withSSRAuth = <GetServerSidePropsType extends { [key: string]: any;
         },
     });
 
-    return withAuth(() => {
-        return next(context);
+    return withAuth((authReq) => {
+        const authContext = {...context, user: authReq.user};
+        return next(authContext);
     })(req as NextApiRequest, res as NextApiResponse);
 };
 
