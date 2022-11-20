@@ -20,12 +20,12 @@ const userSchema = new mongoose.Schema<User>(
         },
         password: {
             type: String,
-            required: true,
             unique: false,
+            default: ""
         },
         orders: {
             type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
-            required: true,
+            default: []
         },
         permissions: {
             type: [Number],

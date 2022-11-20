@@ -40,7 +40,7 @@ const handler = rest.post(
             sessionTokenExpMs = getSessionExpireMs();
 
         const status = await User.updateOne(
-            { _id: userToAuth._id },
+            { _id: userToAuth._id, status: 0},
             { sessionToken, sessionTokenExpMs }
         ).exec();
         debug('updated status: %o', status);
@@ -53,7 +53,7 @@ const handler = rest.post(
                 ';'
         ]);
 
-        return res.status(200).end();
+        return res.redirect(200, "/");
     }, validator)));
 
 export default handler;
