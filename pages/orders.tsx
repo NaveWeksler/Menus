@@ -1,7 +1,9 @@
 import Order from 'components/Order';
 import Link from 'next/link';
 import { withSSRAuth } from 'lib/api/util/auth';
+import {getOrdersById} from "lib/api/orders/getOrders";
 import {GetServerSideProps, InferGetServerSidePropsType} from "next";
+import {AuthRequest} from "lib/api/types/types"
 
 const debug = require('debug')('menus:orders');
 
@@ -28,37 +30,12 @@ const Orders = ({ orders }: InferGetServerSidePropsType<typeof getServerSideProp
     );
 };
 
-export const getServerSideProps = withSSRAuth<{orders: {time: number, items: {name: string, price: number}[]}[]}>(async ({ req, res }) => {
+export const getServerSideProps = withSSRAuth<{orders: {time: number, items: {name: string, price: number}[]}[]}>(async (ctx) => {
+    const orders = await getOrdersById(ctx.user._id);
+    console.log("orders: ", orders, "id: ", ctx.user._id);
     return {
         props: {
-            orders: [
-                {
-                    time: 100,
-                    items: [
-                        { name: 'Hamburger', price: 10 },
-                        { name: 'Hamburger', price: 10 },
-                        { name: 'Chips', price: 2 },
-                    ],
-                },
-                {
-                    time: 750,
-                    items: [
-                        { name: 'Orange juice', price: 3 },
-                        { name: 'Hamburger', price: 10 },
-                        { name: 'Chips', price: 2 },
-                    ],
-                },
-                {
-                    time: 100,
-                    items: [
-                        { name: 'Cheeseburger', price: 12 },
-                        { name: 'Large Hamburger', price: 12 },
-                        { name: 'Chips', price: 2 },
-                        { name: 'Large Chips', price: 5 },
-                        { name: 'Large Cheeseburger', price: 14 },
-                    ],
-                },
-            ],
+            orders: orders
         },
     };
 });
