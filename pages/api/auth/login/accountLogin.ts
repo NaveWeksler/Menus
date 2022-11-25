@@ -41,7 +41,7 @@ const handler = rest.post(
 
         const status = await User.updateOne(
             { _id: userToAuth._id, status: 0},
-            { sessionToken, sessionTokenExpMs }
+            {$set: {sessionToken, sessionTokenExpMs} }
         ).exec();
         debug('updated status: %o', status);
 

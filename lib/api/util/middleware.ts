@@ -29,6 +29,7 @@ export const rest: {[key: string]: (next: nextFunction) => any} = {
 };
 
 
+
 export const withContract = <Input, Output, Request extends NextApiRequest = NextApiRequest>(next: (req: Omit<Request, "body"> & {body: z.infer<typeof bodyValidator>}, res: NextApiResponse<Output>) => any, bodyValidator: z.Schema<Input>) =>
  (req: NextApiRequest | AuthRequest, res: NextApiResponse ) => {
     
@@ -36,4 +37,3 @@ export const withContract = <Input, Output, Request extends NextApiRequest = Nex
 
     return next(req as (Omit<Request, "body"> & {body:  z.infer<typeof bodyValidator>}), res as NextApiResponse<Output>)
 }
-

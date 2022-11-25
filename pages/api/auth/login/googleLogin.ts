@@ -7,11 +7,11 @@ const debug = require("debug")("menus:googleLogin");
 const maxAgeSec = parseInt(process.env.SESSION_EXP_MS) / 1000;
 
 /**
- *  login with google button
+ *  login with google. if no account, create one.
  * for now, requires user to verify email with google. maybe add our verification as anohter option.
- * */
+ */
 export default withDB(async (req, res) => {
-	console.log(req.cookies, req.body)
+	
 	if (!(
 			req.cookies.g_csrf_token &&
 			req.body.g_csrf_token &&
@@ -19,21 +19,34 @@ export default withDB(async (req, res) => {
 		)) return res.status(406).end();
 
     const userData = await verify(req.body.credential);
+
     debug("data: ", userData);
+
     if (!userData) return res.status(401).end();
 
 	const email = userData.email as string; // we require email in permission. (IMPORTANT)
-	const user = await User.findOne({email, status: 0}).exec();
 
-	if (!user) return res.status(404);
-
-	 const sessionToken = getSessionToken(),
+    const sessionToken = getSessionToken(),
             sessionTokenExpMs = getSessionExpireMs();
 
+	
     const status = await User.updateOne(
-            { _id: user._id },
-            { sessionToken, sessionTokenExpMs }
+            { email, status: 0 },
+            {$set: {sessionToken, sessionTokenExpMs} },
     ).exec();
+
+    if (status.modifiedCount !== 1) {
+        await User.create(
+            {
+                firstName: userData.name?.split(" ")[0],
+                lastName: userData.family_name,
+                email,
+                status: 0,
+                sessionToken,
+                sessionTokenExpMs
+            }
+        );
+    }
 
     debug('updated, status: %o', status);
 
