@@ -1,5 +1,7 @@
-export const validateItems = (items: {name: string, description: string, price: string}[]) => {
-    /*
+export const validateItems = (
+	items: { name: string; description: string; price: string }[]
+) => {
+	/*
         * validate each item is following this model:
         * {
         *  name: String,
@@ -14,14 +16,14 @@ export const validateItems = (items: {name: string, description: string, price: 
         *   description: String,
         * }
     */
-    if (!items) return false;
-    items.forEach((item) => {
-        if (!item.name || !item.description || !item.price) return false;
-    });
+	if (!items) return false;
+	items.forEach((item) => {
+		if (!item.name || !item.description || !item.price) return false;
+	});
 
-    return true;
+	return true;
 };
 
 export const validateTitle = (title: string) => {
-    return /^[a-zA-Z1-9 ]{1,20}$/.test(title); // english or numbers only length 1 to 12
+	return /^[a-zA-Z1-9 ]{1,20}$/.test(title); // english or numbers only length 1 to 12
 };

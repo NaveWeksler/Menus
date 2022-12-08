@@ -1,10 +1,9 @@
-import z from "zod";
+import z from 'zod';
 
 export const validator = z.object({
-  title: z.string()
+	title: z.string(),
 });
-
 
 export type Input = z.infer<typeof validator>;
 
-export type Output = {id: string};
+export type Output = { id: string };

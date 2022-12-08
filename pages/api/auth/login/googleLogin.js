@@ -1,3 +1,0 @@
-/**
- *  login with google button
- * */

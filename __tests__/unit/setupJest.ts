@@ -1,14 +1,14 @@
-import connect from "@lib/api/mongoHandler";
-import mongoose from "mongoose";
+import connect from '@lib/api/mongoHandler';
+import mongoose from 'mongoose';
 
 global.beforeAll(() => {
-    connect();
-})
+	connect();
+});
 
 global.beforeEach(() => {
-    jest.clearAllMocks();
+	jest.clearAllMocks();
 });
 
 global.afterAll(() => {
-    mongoose.connection.close();
-})
+	mongoose.connection.close();
+});

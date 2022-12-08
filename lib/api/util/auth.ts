@@ -1,8 +1,14 @@
 import { withDB } from './middleware';
 import User from 'lib/api/models/user';
 const debug = require('debug')('menus:auth');
-import {AuthRequest} from "lib/api/types/types"
-import { NextApiResponse, GetServerSideProps, NextApiRequest, GetServerSidePropsContext } from 'next';
+import { AuthRequest } from 'lib/api/types/types';
+import { UserModel } from 'lib/api/types/user';
+import {
+	NextApiResponse,
+	GetServerSideProps,
+	NextApiRequest,
+	GetServerSidePropsContext,
+} from 'next';
 
 /**
  * Permission Guide:
@@ -21,10 +27,11 @@ import { NextApiResponse, GetServerSideProps, NextApiRequest, GetServerSideProps
  * -1 edit all menus
  */
 
-const ROUTESID: Readonly<{[key: string]: number}> = { // only routes
-    "/api/menu/editMenu": 1,
-    "/orders": 2,
-    "/api/createMenu": 3,
+const ROUTESID: Readonly<{ [key: string]: number }> = {
+	// only routes
+	'/api/menu/editMenu': 1,
+	'/orders': 2,
+	'/api/createMenu': 3,
 };
 Object.freeze(ROUTESID);
 
@@ -37,76 +44,90 @@ Object.freeze(ROUTESID);
  * IMPORTANT - uses withDB by default.
  */
 const withAuth = (next: (req: AuthRequest, res: NextApiResponse) => any) =>
-    withDB(async (req, res) => {
-        console.log(req.url, );
-        const sessionToken = req.cookies['sessionToken'];
-        // const csrfCookie = req.cookies['csrfToken'];
-        // const csrfBody = req.body?.csrfToken;
-        if (!req.url) return res.status(500).end();
+	withDB(async (req, res) => {
+		console.log(req.url);
+		const sessionToken = req.cookies['sessionToken'];
+		// const csrfCookie = req.cookies['csrfToken'];
+		// const csrfBody = req.body?.csrfToken;
+		if (!req.url) return res.status(500).end();
 
-        if (!sessionToken) {
-            debug('Session Token Missing');
-            return res.redirect(400, '/auth/login');
-        }
+		if (!sessionToken) {
+			debug('Session Token Missing');
+			return res.redirect(400, '/auth/login');
+		}
 
-        // check for csrf
-        if (req.method !== 'GET' && req.headers.csrf !== "true") {
-            debug('csrf header not found');
-            return res.redirect(401, '/auth/login');
-        }
+		// check for csrf
+		if (req.method !== 'GET' && req.headers.csrf !== 'true') {
+			debug('csrf header not found');
+			return res.redirect(401, '/auth/login');
+		}
 
-        res.setHeader('Cache-Control', 'private'); // after login should add private to prevent leaking private info.
-        // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+		res.setHeader('Cache-Control', 'private'); // after login should add private to prevent leaking private info.
+		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
-        // get old user and change user session
-        debug('query for user');
-        const user = await User.findOne({ sessionToken }).lean().exec();
-        console.log(user);
-        debug('got user. check authorized');
-        if (!user || !user.sessionTokenExpMs || new Date().getTime() > user.sessionTokenExpMs) {
-            debug('cannot auth with non valid session');
-            return res.redirect(401, '/auth/login');
-        }
+		// get old user and change user session
+		debug('query for user');
+		const user = await User.findOne({ sessionToken }).lean().exec();
+		console.log(user);
+		debug('got user. check authorized');
+		if (
+			!user ||
+			!user.sessionTokenExpMs ||
+			new Date().getTime() > user.sessionTokenExpMs
+		) {
+			debug('cannot auth with non valid session');
+			return res.redirect(401, '/auth/login');
+		}
 
-        
-        // valid user
-        debug('authenticated user');
-        const requestUrl = req.url.split("?")[0]; // get url pathname (http://localhost:3000/abc/d?a=b ==> abc/d)
-        if (!user.permissions.includes(ROUTESID[requestUrl])) {
-            debug(
-                'user permission',
-                user.permissions,
-                ', required',
-                requestUrl
-            );
-            return res.redirect(403, '/');
-        }
-        debug('authorized user. next');
-        
-        const authReq = {...req, user} as AuthRequest
-        return next(authReq, res);
-    });
+		// valid user
+		debug('authenticated user');
+		const requestUrl = req.url.split('?')[0]; // get url pathname (http://localhost:3000/abc/d?a=b ==> abc/d)
+		if (!user.permissions.includes(ROUTESID[requestUrl])) {
+			debug('user permission', user.permissions, ', required', requestUrl);
+			return res.redirect(403, '/');
+		}
+		debug('authorized user. next');
+
+		const authReq = { ...req, user } as AuthRequest;
+		return next(authReq, res);
+	});
+
+interface GetServerSidePropsContextWithSession
+	extends GetServerSidePropsContext {
+	user: UserModel;
+}
+
+type GetServerSidePropsWithAuth<
+	P extends { [key: string]: any } = { [key: string]: any }
+> = (context: GetServerSidePropsContextWithSession) => Promise<P>;
 
 /**
  *
  * @param {Int} routeID the number associated with the route. (used for authorization)
  * @param {*} next the original 'getServerSideProps' function
  */
-export const withSSRAuth = <GetServerSidePropsType extends { [key: string]: any; }>(next: GetServerSideProps ): GetServerSideProps<GetServerSidePropsType> => async (context: GetServerSidePropsContext) => {
-    const req = context.req;
-    const res = context.res as typeof context.res & {redirect: (status: number, to: string) => any};
+export const withSSRAuth =
+	<GetServerSidePropsType extends { [key: string]: any }>(
+		next: GetServerSidePropsWithAuth
+	): GetServerSideProps<GetServerSidePropsType> =>
+	async (context: GetServerSidePropsContext) => {
+		const req = context.req;
+		const res = context.res as typeof context.res & {
+			redirect: (status: number, to: string) => any;
+		};
 
-    res.redirect = (_, to: string) => ({
-        redirect: {
-            //ignore status if its possible to add status change it.
-            destination: to,
-            permanent: false,
-        },
-    });
+		res.redirect = (_, to: string) => ({
+			redirect: {
+				//ignore status if its possible to add status change it.
+				destination: to,
+				permanent: false,
+			},
+		});
 
-    return withAuth(() => {
-        return next(context);
-    })(req as NextApiRequest, res as NextApiResponse);
-};
+		return withAuth((authReq) => {
+			const authContext = { ...context, user: authReq.user };
+			return next(authContext);
+		})(req as NextApiRequest, res as NextApiResponse);
+	};
 
 export default withAuth;

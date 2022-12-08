@@ -4,11 +4,11 @@ import { AppProps } from 'next/app';
 import 'styles/globals.css';
 
 const App = ({ Component, pageProps }: AppProps) => (
-    <ThemeProvider attribute='class'>
-        <Layout>
-            <Component {...pageProps} />
-        </Layout>
-    </ThemeProvider>
+	<ThemeProvider attribute='class'>
+		<Layout>
+			<Component {...pageProps} />
+		</Layout>
+	</ThemeProvider>
 );
 
 export default App;

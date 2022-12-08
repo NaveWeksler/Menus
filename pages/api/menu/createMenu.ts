@@ -2,35 +2,40 @@ import withAuth from 'lib/api/util/auth';
 
 import { validateTitle } from 'lib/api/menu/menuValidator';
 import Menu from 'lib/api/models/menu';
-import {withContract} from "lib/api/util/middleware";
-import {validator, type Input, type Output} from 'lib/contract/createMenu';
+import { withContract } from 'lib/api/util/middleware';
+import { validator, type Input, type Output } from 'lib/contract/createMenu';
 const debug = require('debug')('menus:createMenu');
 
-const createMenu = withAuth(withContract<Input, Output>(async (req, res) => {
-        const owner = req.cookies["owner"], title = req.body.title;
-        if (!owner || !validateTitle(title)) return res.status(400).end();
-        debug("query and create menu");
-        const doc = await Menu.findOneAndUpdate({
-            owner,
-            title,
-        }, {
-            $setOnInsert: {
-                owner,
-                title
-            }
-        }, {
-            upsert: true
-        }).select("_id").exec();    
-        debug("query status: %o", doc);
-        
-        if (!doc) return res.status(409).end();
+const createMenu = withAuth(
+	withContract<Input, Output>(async (req, res) => {
+		const owner = req.cookies['owner'],
+			title = req.body.title;
+		if (!owner || !validateTitle(title)) return res.status(400).end();
+		debug('query and create menu');
+		const doc = await Menu.findOneAndUpdate(
+			{
+				owner,
+				title,
+			},
+			{
+				$setOnInsert: {
+					owner,
+					title,
+				},
+			},
+			{
+				upsert: true,
+			}
+		)
+			.select('_id')
+			.exec();
+		debug('query status: %o', doc);
 
-        res.status(201).json({id: doc._id.toString()});
-        
-    }, validator
-));
+		if (!doc) return res.status(409).end();
 
-
+		res.status(201).json({ id: doc._id.toString() });
+	}, validator)
+);
 
 /**
  * const { title, items } = req.body;
