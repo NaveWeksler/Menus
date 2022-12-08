@@ -13,9 +13,15 @@ module.exports = {
                     3: '#38bdf8',
                     4: '#8b5cf6',
                 },
+                dark: {
+                    1: '#1c1c1c',
+                },
             },
             boxShadow: {
                 header: '0 0 10px rgba(0,0,0,0.4)',
+            },
+            screens: {
+                xs: '560px',
             },
         },
     },

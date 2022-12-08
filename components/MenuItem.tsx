@@ -1,10 +1,26 @@
 import Image from 'next/image';
 
-const MenuItem = ({ name, description, price, image }: {name: string, description: string, price: number, image: string}) => (
+const MenuItem = ({
+    name,
+    description,
+    price,
+    image,
+}: {
+    name: string;
+    description: string;
+    price: number;
+    image: string;
+}) => (
     <div className='px-2 py-5 hover:bg-gray-50 dark:hover:bg-slate-900 transition'>
         <div className='flex justify-between w-full h-20'>
             <div className='w-32 h-full rounded-lg overflow-hidden relative'>
-                <Image src={image} alt={name} layout='fill' objectFit='cover' priority={true}/>
+                <Image
+                    src={image}
+                    alt={name}
+                    layout='fill'
+                    objectFit='cover'
+                    priority={true}
+                />
             </div>
 
             <div className='flex flex-col flex-1 text-right pl-1 overflow-hidden'>

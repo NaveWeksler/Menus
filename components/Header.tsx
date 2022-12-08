@@ -25,7 +25,7 @@ const Header = ({ title }: Props) => {
     return (
         <>
             <div
-                className={`flex justify-center items-center sticky top-0 z-10 bg-white px-3 py-4 ${
+                className={`flex justify-center items-center sticky top-0 z-10 bg-white dark:bg-dark-1 px-3 py-4 ${
                     shadow ? 'shadow-header' : ''
                 } transition-all ease-linear`}
             >

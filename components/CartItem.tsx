@@ -2,6 +2,15 @@ import { GrAdd } from 'react-icons/gr';
 import { BiMinus } from 'react-icons/bi';
 import Image from 'next/image';
 
+type Props = {
+    name: string;
+    price: number;
+    image: string;
+    quantity: number;
+    description?: string;
+    setQuantity: (newQuantity: number) => void;
+};
+
 const CartItem = ({
     name,
     description,
@@ -9,10 +18,10 @@ const CartItem = ({
     image,
     quantity,
     setQuantity,
-}: {name: string, price: number, image: string, quantity: number, description: string, setQuantity: (newQuantity: number) => void}) => {
+}: Props) => {
     return (
-        <div className='flex justify-between h-24 py-2 shadow-theme overflow-hidden'>
-            <div className='w-32 h-full relative rounded-lg overflow-hidden'>
+        <div className='flex justify-between h-[6.25rem] py-2 shadow-theme overflow-hidden'>
+            <div className='w-32 relative rounded-lg overflow-hidden'>
                 <Image src={image} alt={name} layout='fill' objectFit='cover' />
             </div>
 

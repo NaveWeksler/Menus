@@ -1,7 +1,15 @@
 import { cloneElement } from 'react';
 import { IoMdClose } from 'react-icons/io';
 
-const MenuModal = ({ children, isOpen, close }: {children: JSX.Element, isOpen: boolean, close: () => void}) => (
+const MenuModal = ({
+    children,
+    isOpen,
+    close,
+}: {
+    children: JSX.Element;
+    isOpen: boolean;
+    close: () => void;
+}) => (
     <div
         aria-hidden={!isOpen}
         className={`fixed inset-0 z-50 flex justify-center items-center ${
@@ -16,13 +24,11 @@ const MenuModal = ({ children, isOpen, close }: {children: JSX.Element, isOpen: 
         />
 
         <div
-            className={`absolute mx-auto inset-x-0 bottom-0 rounded-t-2xl bg-light-1 max-h-[95%] overflow-hidden shadow-xl sm:rounded-b-2xl sm:bottom-auto sm:max-w-md lg:max-w-lg ${
-                isOpen ? '' : 'opacity-0 translate-y-full sm:translate-y-20'
+            className={`absolute mx-auto inset-x-0 bottom-0 rounded-t-2xl bg-light-1 max-h-[95%] overflow-hidden shadow-xl xs:rounded-b-2xl xs:bottom-auto xs:max-w-md ${
+                isOpen ? '' : 'opacity-0 translate-y-full xs:translate-y-20'
             } transition-all ease-in-out`}
         >
-            {
-                children
-            }
+            {children}
 
             <button
                 onClick={close}

@@ -1,17 +1,24 @@
 import { useState, useEffect } from 'react';
 import CartItem from './CartItem';
 
-
-
-const Cart = ({isOpen}: {isOpen: boolean}) => {
-    const [order, setOrder] = useState<{price: number, items: {description: string, image: string, name: string, quantity: number, price: number}[]}>({
+const Cart = ({ isOpen }: { isOpen: boolean }) => {
+    const [order, setOrder] = useState<{
+        price: number;
+        items: {
+            description: string;
+            image: string;
+            name: string;
+            quantity: number;
+            price: number;
+        }[];
+    }>({
         items: [],
         price: 0,
     });
 
     useEffect(() => {
         const orderString = localStorage.getItem('order');
-        console.log("Str:", orderString);
+        console.log('Str:', orderString);
         if (orderString) {
             setOrder(JSON.parse(orderString));
         }
